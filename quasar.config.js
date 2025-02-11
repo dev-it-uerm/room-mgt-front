@@ -55,12 +55,11 @@ module.exports = configure(function (/* ctx */) {
       // analyze: true,
       env: {
         APP_NAME: "Room Management",
-        // BACKEND_REST_API_URL: "http://10.107.0.11:4433",
-        IMAGE_REST_API_URL: "http://10.107.11.169/getpic/?i=",
-
-        // --------------- PROD CONFIG ---------------
         BACKEND_REST_API_URL: "https://localapi.uerm.edu.ph:8081",
-        // --------------- PROD CONFIG ---------------
+
+        // BACKEND_REST_API_URL: "http://10.107.0.11:4433",
+        // BACKEND_REST_API_URL: "http://10.107.15.171:4000",
+        IMAGE_REST_API_URL: "http://10.107.11.169/getpic/?i=",
         BACKEND_REST_API_TIMEOUT: 50000,
         START_NOTIF_DAYS: 180,
       }, // rawDefine: {}
