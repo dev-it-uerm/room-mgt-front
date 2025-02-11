@@ -150,7 +150,7 @@
                 </q-tab-panels>
               </q-card-section>
             </q-card> -->
-            <q-card>
+            <q-card v-else>
               <q-tabs
                 v-model="tab"
                 indicator-color="positive"
