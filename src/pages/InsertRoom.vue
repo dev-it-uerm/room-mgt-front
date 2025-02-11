@@ -318,16 +318,16 @@ export default {
       update(() => {
         const needle = val.toLowerCase();
         this.rooms = this.roomOptions.filter(
-          (option) => option.description.toLowerCase().indexOf(needle) > -1,
+          (option) => option.description.toLowerCase().indexOf(needle) > -1
         );
         this.buildings = this.buildingOptions.filter(
-          (option) => option.description.toLowerCase().indexOf(needle) > -1,
+          (option) => option.description.toLowerCase().indexOf(needle) > -1
         );
         this.departments = this.departmentOptions.filter(
-          (option) => option.deptLabel.toLowerCase().indexOf(needle) > -1,
+          (option) => option.deptLabel.toLowerCase().indexOf(needle) > -1
         );
         this.floor = floorsOptions.filter(
-          (option) => option.label.toLowerCase().indexOf(needle) > -1,
+          (option) => option.label.toLowerCase().indexOf(needle) > -1
         );
       });
     },
@@ -611,6 +611,8 @@ export default {
             floor: this.selectedFloor.value,
             roomTypeId: this.selectedRoom.code,
           };
+
+          console.log(data);
 
           // this.$q.loading.show({
           //   spinner: QSpinnerIos,
