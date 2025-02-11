@@ -60,7 +60,7 @@
       <div style="position: absolute; bottom: 0; left: 0; width: 100%">
         <div style="display: flex; justify-content: center">
           <img
-            src="assets/images/uerm-hospital-logo.png"
+            src="../assets/images/uerm-hospital-logo.png"
             alt="avatar"
             style="width: 70%; height: 150px"
           />
