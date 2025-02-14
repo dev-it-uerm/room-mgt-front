@@ -39,7 +39,7 @@ export default route(function (/* { store, ssrContext } */) {
         children: [
           {
             path: "/insert-room",
-            name: "/InsertRoom",
+            name: "/Insert Room",
             meta: {
               title: "Insert Room",
               requiresAuth: true,
@@ -48,7 +48,7 @@ export default route(function (/* { store, ssrContext } */) {
           },
           {
             path: "/schedule-class-room",
-            name: "/ClassRoomScheduler",
+            name: "/Classroom Scheduler",
             meta: {
               title: "Classroom Scheduler",
               requiresAuth: true,
@@ -57,7 +57,7 @@ export default route(function (/* { store, ssrContext } */) {
           },
           {
             path: "/schedule-room-booking",
-            name: "/RoomScheduler",
+            name: "/Room Scheduler",
             meta: {
               title: "Room Scheduler",
               requiresAuth: true,
@@ -68,7 +68,7 @@ export default route(function (/* { store, ssrContext } */) {
             path: "/schedule-custom-classroom-scheduler",
             name: "/Custom Classroom",
             meta: {
-              title: "CustomClassroom",
+              title: "Custom Classroom",
               requiresAuth: true,
             },
             component: () => import("src/pages/CustomClassroomBooking.vue"),
@@ -83,8 +83,8 @@ export default route(function (/* { store, ssrContext } */) {
             component: () => import("src/pages/ScheduledRooms.vue"),
           },
           {
-            path: "/generatereport",
-            name: "GenerateReport",
+            path: "/generate-report",
+            name: "Generate Report",
             meta: {
               title: "GenerateReport",
               requiresAuth: true,
@@ -93,8 +93,8 @@ export default route(function (/* { store, ssrContext } */) {
           },
 
           {
-            path: "/calendarview",
-            name: "CalendarView",
+            path: "/calendar-view",
+            name: "Calendar View",
             meta: {
               title: "CalendarView",
               requiresAuth: true,
@@ -103,8 +103,8 @@ export default route(function (/* { store, ssrContext } */) {
           },
 
           {
-            path: "/classroomutiiization",
-            name: "ClassroomUtilization",
+            path: "/classroom-utiiization",
+            name: "Classroom Utilization",
             meta: {
               title: "ClassroomUtilization",
               requiresAuth: true,
@@ -112,7 +112,7 @@ export default route(function (/* { store, ssrContext } */) {
             component: () => import("src/pages/ClassroomUtilization.vue"),
           },
           {
-            path: "/Report",
+            path: "/report",
             name: "Report",
             meta: {
               title: "Report",

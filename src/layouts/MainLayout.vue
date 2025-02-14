@@ -111,7 +111,7 @@ const linksList = [
     title: "Scheduled Rooms",
     caption: "Scheduled Rooms",
     icon: "event_available",
-    link: "/Scheduled-rooms",
+    link: "/scheduled-rooms",
   },
   {
     title: "Calendar View",
@@ -135,7 +135,7 @@ const linksList = [
     title: "Report",
     caption: "Report",
     icon: "receipt_long",
-    link: "/Report",
+    link: "/report",
   },
 ];
 
