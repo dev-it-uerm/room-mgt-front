@@ -126,16 +126,20 @@
   </div>
   <div class="col-12 q-mb-md">
     <q-input
+      class="inputClass"
       dense
-      class="bg-amber-8"
       v-model="searchText"
-      placeholder="Search"
+      label="Search"
+      label-color="blue-10"
       outlined
-      standout="bg-amber-8 text-white"
       clearable
       :class="[$q.screen.name + '-text2']"
       @clear="clearSearchText"
-    />
+    >
+      <template v-slot:prepend>
+        <q-icon color="blue-10" name="search" />
+      </template>
+    </q-input>
   </div>
   <q-calendar-month
     ref="calendar"

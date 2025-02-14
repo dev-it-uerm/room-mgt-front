@@ -53,9 +53,10 @@
                   color="amber-8"
                 >
                   <q-input
-                    class="bg-amber-8"
+                    class="inputClass q-mb-sm"
                     v-model="searchText"
-                    placeholder="Search"
+                    label="Search"
+                    label-color="blue-10"
                     dense
                     outlined
                     standout="bg-amber-8 text-white"

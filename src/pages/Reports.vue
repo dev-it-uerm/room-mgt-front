@@ -10,8 +10,8 @@
             <q-card v-else>
               <q-tabs
                 v-model="tab"
-                indicator-color="amber-8"
-                active-color="positive"
+                indicator-color="positive"
+                active-color="amber-8"
                 class="bg-blue-10 text-white shadow-2 row"
               >
                 <q-tab
@@ -128,7 +128,7 @@ export default {
     },
 
     async getDepartments() {
-      await helperMethods.delay(100);
+      await helperMethods.delay(1000);
       try {
         await this.$store.dispatch("roomModule/getDepartments");
         this.departments = this.deptOptions;
