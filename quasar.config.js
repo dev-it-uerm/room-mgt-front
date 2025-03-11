@@ -57,7 +57,6 @@ module.exports = configure(function (/* ctx */) {
         APP_NAME: "Room Management",
         BACKEND_REST_API_URL: "https://localapi.uerm.edu.ph:8081",
         // BACKEND_REST_API_URL: "http://10.107.0.11:4433",
-        // BACKEND_REST_API_URL: "http://10.107.15.171:4000",
         IMAGE_REST_API_URL:
           "https://localapi.uerm.edu.ph:8081/personnels/picture/",
         BACKEND_REST_API_TIMEOUT: 50000,

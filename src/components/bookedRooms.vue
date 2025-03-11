@@ -422,7 +422,6 @@ export default {
               spinnerSize: "7em",
             });
 
-            await helperMethods.delay(1000);
             await this.$store.dispatch("roomModule/cancelSchedule", data);
             this.$q.loading.hide();
             this.$q.notify({
@@ -443,7 +442,7 @@ export default {
                 color: "negative",
                 position: "center",
                 message: `${error.response.data.error}`,
-                icon: "check",
+                icon: "report_problem",
                 iconColor: "white",
                 timeout: 1000,
                 progress: true,

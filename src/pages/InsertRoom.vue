@@ -382,7 +382,6 @@ export default {
           // });
 
           try {
-            await helperMethods.delay(1500);
             await this.$store.dispatch("roomModule/submitNewRoomType", data);
             // this.$q.loading.hide();
             this.loader = false;
@@ -481,7 +480,6 @@ export default {
           this.loader = true;
 
           try {
-            await helperMethods.delay(1500);
             await this.$store.dispatch("roomModule/submitNewBuilding", data);
             // this.$q.loading.hide();
             this.loader = false;
@@ -529,7 +527,6 @@ export default {
     },
 
     async getRoomTypes() {
-      await helperMethods.delay(1000);
       try {
         await this.$store.dispatch("roomModule/getRoomTypes");
         this.loadingCounter++;
@@ -542,7 +539,6 @@ export default {
     },
 
     async getBuildings() {
-      await helperMethods.delay(1000);
       try {
         await this.$store.dispatch("roomModule/getBuildings");
         this.loadingCounter++;
@@ -555,7 +551,6 @@ export default {
     },
 
     async getDepartments() {
-      await helperMethods.delay(1000);
       try {
         await this.$store.dispatch("roomModule/getDepartments");
         this.loadingCounter++;
@@ -612,8 +607,6 @@ export default {
             roomTypeId: this.selectedRoom.code,
           };
 
-          console.log(data);
-
           // this.$q.loading.show({
           //   spinner: QSpinnerIos,
           //   message: "Submitting New Room",
@@ -626,7 +619,6 @@ export default {
           this.loader = true;
 
           try {
-            await helperMethods.delay(1500);
             await this.$store.dispatch("roomModule/submitNewRoom", data);
             // this.$q.loading.hide();
             this.loader = false;

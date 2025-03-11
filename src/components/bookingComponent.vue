@@ -332,20 +332,20 @@ export default {
       update(() => {
         const needle = val.toLowerCase();
         this.rooms = this.roomOptions.filter(
-          (option) => option.description.toLowerCase().indexOf(needle) > -1,
+          (option) => option.description.toLowerCase().indexOf(needle) > -1
         );
         this.days = daysOptions.filter(
-          (option) => option.label.toLowerCase().indexOf(needle) > -1,
+          (option) => option.label.toLowerCase().indexOf(needle) > -1
         );
         this.subjects = this.subjectOptions.filter(
           (option) =>
-            option.subjectCodeDescription.toLowerCase().indexOf(needle) > -1,
+            option.subjectCodeDescription.toLowerCase().indexOf(needle) > -1
         );
         this.departments = this.departmentOptions.filter(
-          (option) => option.deptLabel.toLowerCase().indexOf(needle) > -1,
+          (option) => option.deptLabel.toLowerCase().indexOf(needle) > -1
         );
         this.section = this.sectionOptions.filter(
-          (option) => option.section.toLowerCase().indexOf(needle) > -1,
+          (option) => option.section.toLowerCase().indexOf(needle) > -1
         );
       });
     },
@@ -493,7 +493,6 @@ export default {
           });
 
           try {
-            await helperMethods.delay(1500);
             await this.$store.dispatch("roomModule/createSchedule", data);
             this.$q.loading.hide();
             this.$q.notify({

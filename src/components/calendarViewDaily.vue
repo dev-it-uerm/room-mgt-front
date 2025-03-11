@@ -236,11 +236,13 @@
                   width: col.width || 'auto',
                   'white-space':
                     col.name === 'subjectDescription' ||
+                    col.name === 'details' ||
                     col.name === 'department'
                       ? 'normal'
                       : 'nowrap',
                   'word-wrap':
                     col.name === 'subjectDescription' ||
+                    col.name === 'details' ||
                     col.name === 'department'
                       ? 'break-word'
                       : 'normal',
@@ -479,7 +481,9 @@ export default {
               map[start.date] = {};
             }
 
-            const abbrDeptLabel = this.getDeptAbbr(event.department);
+            const abbrDeptLabel = event.department
+              ? event.department
+              : "OTHER SCHEDULES";
 
             if (!map[start.date][abbrDeptLabel]) {
               map[start.date][abbrDeptLabel] = [];
@@ -598,8 +602,9 @@ export default {
 
     badgeClasses(event) {
       return {
-        "text-white": true,
-        [`bg-${event.bgcolor}`]: true,
+        "text-black": true,
+        "text-bold": true,
+        [`bg-${event.bgcolor ?? "yellow-14"}`]: true,
         "q-calendar__ellipsis": true,
       };
     },

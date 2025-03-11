@@ -358,8 +358,6 @@ export default {
 
         this.loader = true;
 
-        await helperMethods.delay(1500);
-
         if (typeof Worker !== "undefined") {
           if (typeof this.w === "undefined") {
             if (this.util) {

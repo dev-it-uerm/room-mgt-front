@@ -100,7 +100,6 @@ export default {
 
   methods: {
     async getBuildings() {
-      await helperMethods.delay(1000);
       try {
         await this.$store.dispatch("roomModule/getBuildings");
         this.buildings = this.buildingOptions;
@@ -114,7 +113,6 @@ export default {
     },
 
     async getAllRooms() {
-      await helperMethods.delay(1000);
       try {
         await this.$store.dispatch("roomModule/getAllRooms");
         this.rooms = this.allRoomsReport;
@@ -128,7 +126,6 @@ export default {
     },
 
     async getDepartments() {
-      await helperMethods.delay(1000);
       try {
         await this.$store.dispatch("roomModule/getDepartments");
         this.departments = this.deptOptions;

@@ -370,8 +370,6 @@ export default {
 
         this.loader = true;
 
-        await helperMethods.delay(1500);
-
         if (typeof Worker !== "undefined") {
           if (typeof this.w === "undefined") {
             this.w = new Worker(new URL("../store/worker.js", import.meta.url));
@@ -430,7 +428,6 @@ export default {
     },
 
     async getBuildings() {
-      await helperMethods.delay(1000);
       try {
         await this.$store.dispatch("roomModule/getBuildings");
         this.buildings = this.buildingOptions;
@@ -444,7 +441,6 @@ export default {
     },
 
     async getAllRooms() {
-      await helperMethods.delay(1000);
       try {
         await this.$store.dispatch("roomModule/getAllRooms");
         this.rooms = this.allRoomsReport;

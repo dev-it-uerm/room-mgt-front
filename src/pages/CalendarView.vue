@@ -117,7 +117,6 @@ export default {
     },
 
     async getBookedSchedule() {
-      await helperMethods.delay(1000);
       try {
         await this.$store.dispatch("roomModule/getBookedSchedule");
         this.bookedSchedule = this.booked;
@@ -132,7 +131,6 @@ export default {
     },
 
     async getBookedScheduleByEmployee() {
-      await helperMethods.delay(1000);
       try {
         await this.$store.dispatch("roomModule/getBookedScheduleByEmployee");
         this.employeeBookedSchedule = this.employeeBooked;
@@ -176,20 +174,27 @@ export default {
           const formattedToDate = formatDate(toDate);
 
           const formattedTitle = subjectCode
-            ? `${subjectCode} - ${deptLabel}`
-            : `Book Schedule - ${deptLabel}`;
+            ? deptLabel
+              ? `${subjectCode} - ${deptLabel}`
+              : subjectCode
+            : deptLabel
+            ? `Book Schedule - ${deptLabel}`
+            : `Book Schedule`;
 
           const deptColors = {
             "COLLEGE OF MEDICINE": "primary",
-            "COLLEGE OF NURSING": "green",
-            "COLLEGE OF ALLIED REHABILITATION SCIENCES": "red",
-            "COLLEGE OF ALLIED HEALTH PROFESSIONALS": "orange",
-            "GRADUATE SCHOOL": "violet",
+            "COLLEGE OF NURSING": "green-10",
+            "COLLEGE OF ALLIED REHABILITATION SCIENCES": "red-10",
+            "COLLEGE OF ALLIED HEALTH PROFESSIONALS": "amber-10",
+            "COLLEGE OF ALLIED HEALTH PROFESSIONS": "amber-10",
+            "GRADUATE SCHOOL": "purple-10",
           };
 
+          const fullDay = helperMethods.selectedDayData(days);
+
           const details = section
-            ? `Section: ${section}, Days: ${days}, Time: ${intervals}`
-            : `Book Schedule, Days: ${days}, Time: ${intervals}`;
+            ? `Section: ${section}, Days: ${fullDay}, Time: ${intervals}`
+            : `Days: ${fullDay}, Time: ${intervals}`;
 
           const event = {
             active: active,
@@ -228,7 +233,6 @@ export default {
     },
 
     async getDepartments() {
-      await helperMethods.delay(1000);
       try {
         await this.$store.dispatch("roomModule/getDepartments");
         this.departments = this.deptOptions;
@@ -242,7 +246,6 @@ export default {
     },
 
     async getRooms() {
-      await helperMethods.delay(1000);
       try {
         await this.$store.dispatch("roomModule/getRooms");
         this.rooms = this.roomsOptions;
@@ -256,7 +259,6 @@ export default {
     },
 
     async getBuildings() {
-      await helperMethods.delay(1000);
       try {
         await this.$store.dispatch("roomModule/getBuildings");
         this.buildings = this.buildingOptions;

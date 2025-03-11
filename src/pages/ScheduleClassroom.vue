@@ -250,7 +250,6 @@ export default {
     },
 
     async getSemester() {
-      await helperMethods.delay(1000);
       try {
         await this.$store.dispatch("roomModule/getSemester");
         this.loadingCounter++;
@@ -264,8 +263,6 @@ export default {
     },
 
     async getSubject() {
-      await helperMethods.delay(1000);
-
       try {
         await this.$store.dispatch("roomModule/getSubjectCode");
         this.loadingCounter++;
@@ -279,8 +276,6 @@ export default {
     },
 
     async getRoomTypes() {
-      await helperMethods.delay(1000);
-
       try {
         await this.$store.dispatch("roomModule/getRoomTypes");
         this.loadingCounter++;
@@ -294,8 +289,6 @@ export default {
     },
 
     async getDepartments() {
-      await helperMethods.delay(1000);
-
       try {
         await this.$store.dispatch("roomModule/getDepartments");
         this.loadingCounter++;
@@ -384,7 +377,7 @@ export default {
             // });
             this.loader = true;
             helperMethods.disablePointerEvents();
-            await helperMethods.delay(1500);
+
             await this.$store.dispatch(
               "roomModule/createAutoRoomSchedule",
               data

@@ -440,7 +440,6 @@ export default {
     },
 
     async getBookedSchedule() {
-      await helperMethods.delay(1000);
       try {
         await this.$store.dispatch("roomModule/getBookedSchedule");
         this.bookedSchedule = this.booked;
@@ -464,7 +463,6 @@ export default {
     },
 
     async getBookedScheduleByEmployee() {
-      await helperMethods.delay(1000);
       try {
         await this.$store.dispatch("roomModule/getBookedScheduleByEmployee");
         this.employeeBookedSchedule = this.employeeBooked;

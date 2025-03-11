@@ -7,7 +7,6 @@ import {
 } from "vue-router";
 import helperMethods from "../helperMethods.js";
 import Store from "../store/index.js";
-import { Cookies } from "quasar";
 
 /*
  * If not building with SSR mode, you can

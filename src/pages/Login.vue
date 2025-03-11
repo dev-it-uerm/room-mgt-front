@@ -136,7 +136,7 @@ export default {
           employeeId: this.employeeId,
           password: this.password,
         };
-        await helperMethods.delay(1500);
+
         await this.$store.dispatch("userModule/login", data);
         // this.$q.loading.hide();
         this.loader = true;

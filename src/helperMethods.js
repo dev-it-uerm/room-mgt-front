@@ -226,7 +226,15 @@ const selectedDayData = (data) => {
     Sunday: "SU",
   };
 
-  return dayMap[data];
+  return data
+    .split(",")
+    .map(
+      (day) =>
+        dayMap[day] ||
+        Object.keys(dayMap).find((key) => dayMap[key] === day) ||
+        day
+    )
+    .join(",");
 };
 
 const numberToWords = (number) => {
