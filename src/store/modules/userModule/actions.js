@@ -30,7 +30,7 @@ export default {
         .replace(/_/g, "/");
       const decodedPayload = JSON.parse(
         decodeURIComponent(escape(atob(cleanedPayload))),
-        "utf-8",
+        "utf-8"
       );
       decodedPayload.token = token;
       commit("SET_LOGIN_DATA", decodedPayload);

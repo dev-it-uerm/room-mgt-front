@@ -99,6 +99,7 @@ import { QSpinnerIos } from "quasar";
 import helperMethods from "../helperMethods.js";
 import logo from "../assets/images/LOGOWITHOUTBGWHITETEXT.png";
 import Loader from "../components/Loader.vue";
+import { Cookies } from "quasar";
 
 export default {
   data() {
@@ -170,6 +171,7 @@ export default {
         this.loader = true;
         return this.$router.push("/");
       } catch (error) {
+        console.log(error);
         // this.$q.loading.hide();
         this.loader = false;
         if (error.response.status == "401") {
