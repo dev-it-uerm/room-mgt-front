@@ -4,6 +4,7 @@
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
+  height: 100vh;
 }
 
 .bgImageLogo {
@@ -300,6 +301,22 @@
   min-width: 750px;
 }
 
+.sm-widthLogin {
+  min-width: 320px;
+}
+
+.md-widthLogin {
+  min-width: 350px;
+}
+
+.lg-widthLogin {
+  min-width: 380px;
+}
+.xl-widthLogin {
+  min-width: 400px;
+}
+
+
 .sm-min-height2 {
   min-height: 200px;
 }
@@ -332,16 +349,13 @@
 //   box-shadow: 0 0 15px rgba(255, 255, 255, 1);
 // }
 .black-shadow {
-  box-shadow: 0 0 40px rgba(0, 0, 0, 1);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 1);
 }
 
 .search-text .q-field__native {
   color: $blue-10;
 }
 
-.formStyle {
-  width: 100%;
-}
 
 .logoClass {
   background-color: $blue-10;
@@ -600,4 +614,11 @@
 .drawerStyle {
   box-shadow: 0 0 3px $blue-10;
 }
+
+// .login-card {
+//   width: 400px;
+//   height: 450px;
+//   border-radius: 15px;
+//   box-shadow: 0 0px 8px black;
+// }
 
