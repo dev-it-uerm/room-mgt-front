@@ -44,7 +44,7 @@ export default {
 
   async logout({ dispatch }, employeeId) {
     try {
-      const token = helperMethods.getCookie("token");
+      const token = Cookies.get("token");
       const data = {
         tokenValue: token,
         employeeIdValue: employeeId,
