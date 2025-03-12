@@ -282,7 +282,6 @@ export default {
       //     headers: { Authorization: `Bearer ${Cookies.get("token")}` },
       //   }
       // );
-      console.log(data);
       const token = Cookies.get("token");
       const response = await helperApi.endPointCallGetParameter(
         "bookedRoomsView",
