@@ -3,7 +3,12 @@ import { Cookies } from "quasar";
 import helperMethods from "src/helperMethods";
 import helper from "../../helperApi";
 
-const APIUrl = process.env.RestApiLocal;
+// const APIUrl = process.env.RestApiLocal;
+
+const APIUrl =
+  process.env.Platform === "DEV"
+    ? process.env.RestApiLocal
+    : process.env.RestApiProd;
 
 export default {
   async login({ commit, dispatch }, data) {
