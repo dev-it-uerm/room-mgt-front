@@ -1,17 +1,28 @@
 import axios from "axios";
 import { Cookies } from "quasar";
-import { api } from "src/boot/axios";
-const APIUrl = process.env.BACKEND_REST_API_URL;
+// const APIUrl = process.env.BACKEND_REST_API_URL;
+import helperApi from "src/store/helperApi";
+
+// const APIUrl =
+//   process.env.Platform && process.env.Platform.toUpperCase() === "DEV"
+//     ? process.env.RestApiLocal
+//     : process.env.RestApiProd;
 
 export default {
   async submitNewRoomType({ commit }, data) {
     try {
-      const response = await axios.post(
-        `${APIUrl}/room-mgt/addRoomType`,
+      // const response = await axios.post(
+      //   `${APIUrl}/room-mgt/addRoomType`,
+      //   data,
+      //   {
+      //     headers: { Authorization: `Bearer ${Cookies.get("token")}` },
+      //   }
+      // );
+      const token = Cookies.get("token");
+      const response = await helperApi.endPointCallPost(
+        "addRoomType",
         data,
-        {
-          headers: { Authorization: `Bearer ${Cookies.get("token")}` },
-        }
+        token
       );
     } catch (error) {
       console.error("Error adding new room type", error);
@@ -21,12 +32,18 @@ export default {
 
   async submitNewBuilding({ commit }, data) {
     try {
-      const response = await axios.post(
-        `${APIUrl}/room-mgt/addBuilding`,
+      // const response = await axios.post(
+      //   `${APIUrl}/room-mgt/addBuilding`,
+      //   data,
+      //   {
+      //     headers: { Authorization: `Bearer ${Cookies.get("token")}` },
+      //   }
+      // );
+      const token = Cookies.get("token");
+      const response = await helperApi.endPointCallPost(
+        "addBuilding",
         data,
-        {
-          headers: { Authorization: `Bearer ${Cookies.get("token")}` },
-        }
+        token
       );
     } catch (error) {
       console.error("Error adding new building", error);
@@ -36,10 +53,12 @@ export default {
 
   async getRoomTypes({ commit }) {
     try {
-      const response = await axios.get(`${APIUrl}/room-mgt/getRoomTypes`, {
-        headers: { Authorization: `Bearer ${Cookies.get("token")}` },
-      });
-      commit("SET_ROOM_OPTIONS", response.data);
+      // const response = await axios.get(`${APIUrl}/room-mgt/getRoomTypes`, {
+      //   headers: { Authorization: `Bearer ${Cookies.get("token")}` },
+      // });
+      const token = Cookies.get("token");
+      const response = await helperApi.endPointCallGet("getRoomTypes", token);
+      commit("SET_ROOM_OPTIONS", response);
     } catch (error) {
       console.error("Error Getting Room Types");
       throw error;
@@ -48,10 +67,12 @@ export default {
 
   async getBuildings({ commit }) {
     try {
-      const response = await axios.get(`${APIUrl}/room-mgt/getBuildings`, {
-        headers: { Authorization: `Bearer ${Cookies.get("token")}` },
-      });
-      commit("SET_BUILDING_OPTIONS", response.data);
+      // const response = await axios.get(`${APIUrl}/room-mgt/getBuildings`, {
+      //   headers: { Authorization: `Bearer ${Cookies.get("token")}` },
+      // });
+      const token = Cookies.get("token");
+      const response = await helperApi.endPointCallGet("getBuildings", token);
+      commit("SET_BUILDING_OPTIONS", response);
     } catch (error) {
       console.error("Error Getting Buildings");
       throw error;
@@ -60,10 +81,12 @@ export default {
 
   async getDepartments({ commit }) {
     try {
-      const response = await axios.get(`${APIUrl}/room-mgt/getDepartments`, {
-        headers: { Authorization: `Bearer ${Cookies.get("token")}` },
-      });
-      commit("SET_DEPARTMENT_OPTIONS", response.data);
+      // const response = await axios.get(`${APIUrl}/room-mgt/getDepartments`, {
+      //   headers: { Authorization: `Bearer ${Cookies.get("token")}` },
+      // });
+      const token = Cookies.get("token");
+      const response = await helperApi.endPointCallGet("getDepartments", token);
+      commit("SET_DEPARTMENT_OPTIONS", response);
     } catch (error) {
       console.error("Error Getting Buildings");
       throw error;
@@ -72,9 +95,11 @@ export default {
 
   async submitNewRoom({ commit }, data) {
     try {
-      const response = await axios.post(`${APIUrl}/room-mgt/room`, data, {
-        headers: { Authorization: `Bearer ${Cookies.get("token")}` },
-      });
+      // const response = await axios.post(`${APIUrl}/room-mgt/room`, data, {
+      //   headers: { Authorization: `Bearer ${Cookies.get("token")}` },
+      // });
+      const token = Cookies.get("token");
+      const response = await helperApi.endPointCallPost("room", data, token);
     } catch (error) {
       console.error("Error Creating New Room");
       throw error;
@@ -83,10 +108,12 @@ export default {
 
   async getSubjectCode({ commit }) {
     try {
-      const response = await axios.get(`${APIUrl}/room-mgt/subject-code`, {
-        headers: { Authorization: `Bearer ${Cookies.get("token")}` },
-      });
-      commit("SET_SUBJECTCODE_OPTIONS", response.data);
+      // const response = await axios.get(`${APIUrl}/room-mgt/subject-code`, {
+      //   headers: { Authorization: `Bearer ${Cookies.get("token")}` },
+      // });
+      const token = Cookies.get("token");
+      const response = await helperApi.endPointCallGet("subject-code", token);
+      commit("SET_SUBJECTCODE_OPTIONS", response);
     } catch (error) {
       console.error("Error Getting Subject Code");
       throw error;
@@ -95,12 +122,18 @@ export default {
 
   async createAutoRoomSchedule({ commit }, data) {
     try {
-      const response = await axios.post(
-        `${APIUrl}/room-mgt/createAutoRoomSchedule`,
+      // const response = await axios.post(
+      //   `${APIUrl}/room-mgt/createAutoRoomSchedule`,
+      //   data,
+      //   {
+      //     headers: { Authorization: `Bearer ${Cookies.get("token")}` },
+      //   }
+      // );
+      const token = Cookies.get("token");
+      const response = await helperApi.endPointCallPost(
+        "createAutoRoomSchedule",
         data,
-        {
-          headers: { Authorization: `Bearer ${Cookies.get("token")}` },
-        }
+        token
       );
     } catch (error) {
       console.error("Error Creating Schedule");
@@ -110,14 +143,20 @@ export default {
 
   async getAvailableRoom({ commit }, data) {
     try {
-      const response = await axios.post(
-        `${APIUrl}/room-mgt/getAvailableRoom`,
+      // const response = await axios.post(
+      //   `${APIUrl}/room-mgt/getAvailableRoom`,
+      //   data,
+      //   {
+      //     headers: { Authorization: `Bearer ${Cookies.get("token")}` },
+      //   }
+      // );
+      const token = Cookies.get("token");
+      const response = await helperApi.endPointCallGetParameter(
+        "getAvailableRoom",
         data,
-        {
-          headers: { Authorization: `Bearer ${Cookies.get("token")}` },
-        }
+        token
       );
-      commit("SET_AVAILABLE_ROOM", response.data);
+      commit("SET_AVAILABLE_ROOM", response);
     } catch (error) {
       console.error("Error getting available rooms");
       throw error;
@@ -126,12 +165,18 @@ export default {
 
   async createScheduleBooking({ commit }, data) {
     try {
-      const response = await axios.post(
-        `${APIUrl}/room-mgt/scheduleBooking`,
+      // const response = await axios.post(
+      //   `${APIUrl}/room-mgt/scheduleBooking`,
+      //   data,
+      //   {
+      //     headers: { Authorization: `Bearer ${Cookies.get("token")}` },
+      //   }
+      // );
+      const token = Cookies.get("token");
+      const response = await helperApi.endPointCallPost(
+        "scheduleBooking",
         data,
-        {
-          headers: { Authorization: `Bearer ${Cookies.get("token")}` },
-        }
+        token
       );
     } catch (error) {
       console.error("Error in scheduling a book");
@@ -141,12 +186,18 @@ export default {
 
   async createCustomScheduleBooking({ commit }, data) {
     try {
-      const response = await axios.post(
-        `${APIUrl}/room-mgt/customScheduleBooking`,
+      // const response = await axios.post(
+      //   `${APIUrl}/room-mgt/customScheduleBooking`,
+      //   data,
+      //   {
+      //     headers: { Authorization: `Bearer ${Cookies.get("token")}` },
+      //   }
+      // );
+      const token = Cookies.get("token");
+      const response = await helperApi.endPointCallPost(
+        "customScheduleBooking",
         data,
-        {
-          headers: { Authorization: `Bearer ${Cookies.get("token")}` },
-        }
+        token
       );
     } catch (error) {
       console.error("Error in scheduling a book");
@@ -156,10 +207,12 @@ export default {
 
   async getBookedSchedule({ commit }) {
     try {
-      const response = await axios.get(`${APIUrl}/room-mgt/bookedRooms`, {
-        headers: { Authorization: `Bearer ${Cookies.get("token")}` },
-      });
-      commit("SET_BOOKED_ROOMS", response.data);
+      // const response = await axios.get(`${APIUrl}/room-mgt/bookedRooms`, {
+      //   headers: { Authorization: `Bearer ${Cookies.get("token")}` },
+      // });
+      const token = Cookies.get("token");
+      const response = await helperApi.endPointCallGet("bookedRooms", token);
+      commit("SET_BOOKED_ROOMS", response);
     } catch (error) {
       console.error("Error Getting Booked Schedule");
       throw error;
@@ -168,14 +221,19 @@ export default {
 
   async getSections({ commit }, data) {
     try {
-      const response = await axios.post(
-        `${APIUrl}/room-mgt/getSections`,
-        data,
-        {
-          headers: { Authorization: `Bearer ${Cookies.get("token")}` },
-        }
+      // const response = await axios.post(
+      //   `${APIUrl}/room-mgt/getSections`,
+      //   data,
+      //   {
+      //     headers: { Authorization: `Bearer ${Cookies.get("token")}` },
+      //   }
+      // );
+      const token = Cookies.get("token");
+      const response = await helperApi.endPointCallGetParameter(
+        "getSections",
+        data
       );
-      commit("SET_SECTIONS", response.data);
+      commit("SET_SECTIONS", response);
     } catch (error) {
       console.error("Error in getting section");
       throw error;
@@ -184,11 +242,12 @@ export default {
 
   async getSemester({ commit }) {
     try {
-      const response = await axios.get(`${APIUrl}/room-mgt/getSemester`, {
-        headers: { Authorization: `Bearer ${Cookies.get("token")}` },
-      });
-
-      commit("SET_SEMESTER", response.data);
+      // const response = await axios.get(`${APIUrl}/room-mgt/getSemester`, {
+      //   headers: { Authorization: `Bearer ${Cookies.get("token")}` },
+      // });
+      const token = Cookies.get("token");
+      const response = await helperApi.endPointCallGet("getSemester");
+      commit("SET_SEMESTER", response);
     } catch (error) {
       console.log("Error in getting semester");
       throw error;
@@ -197,13 +256,18 @@ export default {
 
   async getBookedScheduleByEmployee({ commit }) {
     try {
-      const response = await axios.get(
-        `${APIUrl}/room-mgt/bookedRoomsByEmployeeCode`,
-        {
-          headers: { Authorization: `Bearer ${Cookies.get("token")}` },
-        }
+      // const response = await axios.get(
+      //   `${APIUrl}/room-mgt/bookedRoomsByEmployeeCode`,
+      //   {
+      //     headers: { Authorization: `Bearer ${Cookies.get("token")}` },
+      //   }
+      // );
+      const token = Cookies.get("token");
+      const response = await helperApi.endPointCallGet(
+        "bookedRoomsByEmployeeCode",
+        token
       );
-      commit("SET_EMPLOYEE_BOOKED_ROOMS", response.data);
+      commit("SET_EMPLOYEE_BOOKED_ROOMS", response);
     } catch (error) {
       console.log("Error Getting Booked Rooms By Employee Code");
     }
@@ -211,14 +275,21 @@ export default {
 
   async getScheduledRoomView({ commit }, data) {
     try {
-      const response = await axios.post(
-        `${APIUrl}/room-mgt/bookedRoomsView`,
+      // const response = await axios.post(
+      //   `${APIUrl}/room-mgt/bookedRoomsView`,
+      //   data,
+      //   {
+      //     headers: { Authorization: `Bearer ${Cookies.get("token")}` },
+      //   }
+      // );
+      console.log(data);
+      const token = Cookies.get("token");
+      const response = await helperApi.endPointCallGetParameter(
+        "bookedRoomsView",
         data,
-        {
-          headers: { Authorization: `Bearer ${Cookies.get("token")}` },
-        }
+        token
       );
-      commit("SET_SCHEDULED_ROOM_VIEW", response.data);
+      commit("SET_SCHEDULED_ROOM_VIEW", response);
     } catch (error) {
       console.error("Error in getting section");
       throw error;
@@ -235,10 +306,12 @@ export default {
 
   async getAllRooms({ commit }) {
     try {
-      const response = await axios.get(`${APIUrl}/room-mgt/getAllRooms`, {
-        headers: { Authorization: `Bearer ${Cookies.get("token")}` },
-      });
-      commit("SET_ALL_ROOMS_REPORT", response.data);
+      // const response = await axios.get(`${APIUrl}/room-mgt/getAllRooms`, {
+      //   headers: { Authorization: `Bearer ${Cookies.get("token")}` },
+      // });
+      const token = Cookies.get("token");
+      const response = await helperApi.endPointCallGet("getAllRooms", token);
+      commit("SET_ALL_ROOMS_REPORT", response);
     } catch (error) {
       console.log("Error Getting All Rooms");
     }
@@ -246,10 +319,12 @@ export default {
 
   async getRooms({ commit }) {
     try {
-      const response = await axios.get(`${APIUrl}/room-mgt/getRooms`, {
-        headers: { Authorization: `Bearer ${Cookies.get("token")}` },
-      });
-      commit("SET_ROOMS", response.data);
+      // const response = await axios.get(`${APIUrl}/room-mgt/getRooms`, {
+      //   headers: { Authorization: `Bearer ${Cookies.get("token")}` },
+      // });
+      const token = Cookies.get("token");
+      const response = await helperApi.endPointCallGet("getRooms", token);
+      commit("SET_ROOMS", response);
     } catch (error) {
       console.log("Error Getting Rooms");
     }
@@ -257,9 +332,11 @@ export default {
 
   async cancelSchedule({}, data) {
     try {
-      return await axios.post(`${APIUrl}/room-mgt/cancelSchedule`, data, {
-        headers: { Authorization: `Bearer ${Cookies.get("token")}` },
-      });
+      // return await axios.post(`${APIUrl}/room-mgt/cancelSchedule`, data, {
+      //   headers: { Authorization: `Bearer ${Cookies.get("token")}` },
+      // });
+      const token = Cookies.get("token");
+      return await helperApi.endPointCallPost("getRooms", data, token);
     } catch (error) {
       console.log("Error cancelling schedule");
       throw error;

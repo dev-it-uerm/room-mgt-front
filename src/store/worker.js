@@ -1,7 +1,5 @@
 // importScripts("https://cdn.jsdelivr.net/npm/exceljs/dist/exceljs.min.js");
 importScripts("/excel.js");
-import { colors } from "quasar";
-const { getPaletteColor } = colors;
 
 self.onmessage = async (event) => {
   const { type, data } = event.data;

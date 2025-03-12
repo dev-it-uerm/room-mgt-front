@@ -479,7 +479,6 @@ export default {
           this.step === 3 &&
           (!this.selectedSemester ||
             !this.selectedSubject ||
-            !this.selectedSection ||
             !this.timeFrom ||
             !this.timeTo ||
             !this.remarks)
@@ -610,7 +609,7 @@ export default {
         remarks: this.remarks,
         // department: this.selectedDepartment.deptCode,
         subjectCode: this.selectedSubject,
-        section: this.selectedSection,
+        section: this.selectedSection ? this.selectedSection : null,
       };
     },
 
@@ -705,12 +704,37 @@ export default {
                 this.$q.notify({
                   color: "green-8",
                   position: "center",
-                  message: `Successfully Scheduled Room ID: ${roomId}`,
+                  message: `Successfully Scheduled Room(s): ${
+                    Array.isArray(this.selectedRoomSched)
+                      ? this.selectedRoomSched
+                          .map((room) => room.roomName)
+                          .join(", ")
+                      : this.selectedRoomSched.roomName
+                  }`,
                   icon: "check",
                   iconColor: "white",
                   timeout: 1000,
                   progress: true,
                 });
+
+                helperMethods.enablePointerEvents();
+                this.loader = false;
+                this.dateFrom = null;
+                this.dateTo = null;
+                this.remarks = null;
+                this.dateRange = null;
+                this.selectedRoomSched = null;
+                this.timeFrom = null;
+                this.timeTo = null;
+                this.selectedDays = null;
+                this.prof = null;
+                // this.selectedDepartment = null;
+                this.selectedSemester = null;
+                this.selectedSection = null;
+                this.selectedSubject = null;
+                this.capacity = null;
+                this.searchText = "";
+                this.step = 1;
               } catch (error) {
                 this.$q.loading.hide();
                 this.loader = false;
@@ -741,23 +765,23 @@ export default {
             }
           }
           helperMethods.enablePointerEvents();
-          this.loader = false;
-          this.dateFrom = null;
-          this.dateTo = null;
-          this.remarks = null;
-          this.dateRange = null;
-          this.selectedRoomSched = null;
-          this.timeFrom = null;
-          this.timeTo = null;
-          this.selectedDays = null;
-          this.prof = null;
-          // this.selectedDepartment = null;
-          this.selectedSemester = null;
-          this.selectedSection = null;
-          this.selectedSubject = null;
-          this.capacity = null;
-          this.searchText = "";
-          this.step = 1;
+          // this.loader = false;
+          // this.dateFrom = null;
+          // this.dateTo = null;
+          // this.remarks = null;
+          // this.dateRange = null;
+          // this.selectedRoomSched = null;
+          // this.timeFrom = null;
+          // this.timeTo = null;
+          // this.selectedDays = null;
+          // this.prof = null;
+          // // this.selectedDepartment = null;
+          // this.selectedSemester = null;
+          // this.selectedSection = null;
+          // this.selectedSubject = null;
+          // this.capacity = null;
+          // this.searchText = "";
+          // this.step = 1;
         })
         .onDismiss(() => {});
     },

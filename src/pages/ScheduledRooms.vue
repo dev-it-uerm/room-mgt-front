@@ -153,9 +153,9 @@
             <q-card v-else>
               <q-tabs
                 v-model="tab"
-                indicator-color="positive"
-                active-color="amber-8"
-                class="bg-blue-10 text-white shadow-2 row"
+                indicator-color="amber-8"
+                active-color="positive"
+                class="bg-blue-10 text-amber-8 shadow-2 row"
               >
                 <q-tab
                   :class="$q.screen.gt.md ? 'col-6' : 'col-12'"

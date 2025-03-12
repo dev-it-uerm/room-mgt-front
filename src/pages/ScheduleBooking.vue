@@ -410,10 +410,7 @@ export default {
 
         if (
           this.step === 3 &&
-          (!this.selectedDepartment ||
-            !this.timeFrom ||
-            !this.timeTo ||
-            !this.remarks)
+          (!this.timeFrom || !this.timeTo || !this.remarks)
         ) {
           this.$q.notify({
             color: "negative",
@@ -514,7 +511,9 @@ export default {
           days: item.day,
           subjectCode: this.selectedSubject,
           section: this.selectedSection,
-          department: this.selectedDepartment.deptCode,
+          department: this.selectedDepartment
+            ? this.selectedDepartment.deptCode
+            : null,
           intervals: interval,
           facultyName: this.prof,
           remarks: this.remarks,
@@ -530,7 +529,9 @@ export default {
         days: await helperMethods.selectedDaysToString(this.selectedDays),
         intervals: interval,
         remarks: this.remarks,
-        department: this.selectedDepartment.deptCode,
+        department: this.selectedDepartment
+          ? this.selectedDepartment.deptCode
+          : null,
         subjectCode: this.selectedSubject,
         section: this.selectedSection,
       };
@@ -627,15 +628,39 @@ export default {
                 this.$q.notify({
                   color: "green-8",
                   position: "center",
-                  message: `Successfully Scheduled Room ID: ${roomId}`,
+                  message: `Successfully Scheduled Room(s): ${
+                    Array.isArray(this.selectedRoomSched)
+                      ? this.selectedRoomSched
+                          .map((room) => room.roomName)
+                          .join(", ")
+                      : this.selectedRoomSched.roomName
+                  }`,
                   icon: "check",
                   iconColor: "white",
                   timeout: 1000,
                   progress: true,
                 });
+
+                helperMethods.enablePointerEvents();
+                this.loader = false;
+                this.dateFrom = null;
+                this.dateTo = null;
+                this.remarks = null;
+                this.dateRange = null;
+                this.selectedRoomSched = null;
+                this.timeFrom = null;
+                this.timeTo = null;
+                this.selectedDays = null;
+                this.prof = null;
+                this.selectedDepartment = null;
+                this.selectedSemester = null;
+                this.selectedSection = null;
+                this.selectedSubject = null;
+                this.capacity = null;
+                this.searchText = "";
+                this.step = 1;
               } catch (error) {
                 this.$q.loading.hide();
-
                 this.loader = false;
                 helperMethods.enablePointerEvents();
                 this.$q.loading.hide();
@@ -664,113 +689,23 @@ export default {
             }
           }
           helperMethods.enablePointerEvents();
-          this.loader = false;
-          this.dateFrom = null;
-          this.dateTo = null;
-          this.remarks = null;
-          this.dateRange = null;
-          this.selectedRoomSched = null;
-          this.timeFrom = null;
-          this.timeTo = null;
-          this.selectedDays = null;
-          this.prof = null;
-          this.selectedDepartment = null;
-          this.selectedSemester = null;
-          this.selectedSection = null;
-          this.selectedSubject = null;
-          this.capacity = null;
-          this.searchText = "";
-          this.step = 1;
-
-          // if (this.selectedDates.length > 0) {
-          //   data = this.sharedData(this.selectedDates, interval);
-          // } else {
-          //   if (this.dateRange.from || this.dateRange.to) {
-          //     data = await this.dateRangeData(
-          //       this.dateRange.from,
-          //       this.dateRange.to,
-          //       interval,
-          //     );
-          //   } else {
-          //     data = await this.dateRangeData(
-          //       this.dateRange,
-          //       this.dateRange,
-          //       interval,
-          //     );
-          //   }
-          // }
-
-          // try {
-          //   this.$q.loading.show({
-          //     spinner: QSpinnerIos,
-          //     message: "Submitting Schedule",
-          //     messageColor: "blue-10",
-          //     backgroundColor: "grey-1",
-          //     spinnerColor: "blue-10",
-          //     customClass: "custom-loading-style",
-          //     spinnerSize: "7em",
-          //   });
-          //   this.loader = true;
-          //   helperMethods.disablePointerEvents();
-          //
-          //   await this.$store.dispatch(
-          //     "roomModule/createCustomScheduleBooking",
-          //     data,
-          //   );
-          //   // this.$q.loading.hide();
-          //   this.loader = false;
-          //   this.$q.notify({
-          //     color: "green-8",
-          //     position: "center",
-          //     message: "Success Scheduling Room",
-          //     icon: "check",
-          //     iconColor: "white",
-          //     timeout: 1000,
-          //     progress: true,
-          //   });
-          //   helperMethods.enablePointerEvents();
-          //   this.dateFrom = null;
-          //   this.dateTo = null;
-          //   this.remarks = null;
-          //   this.dateRange = null;
-          //   this.selectedRoomSched = null;
-          //   this.timeFrom = null;
-          //   this.timeTo = null;
-          //   this.selectedDays = null;
-          //   this.prof = null;
-          //   this.selectedDepartment = null;
-          //   this.selectedSemester = null;
-          //   this.selectedSection = null;
-          //   this.selectedSubject = null;
-          //   this.capacity = null;
-          //   this.searchText = "";
-          //   this.step = 1;
-          // } catch (error) {
-          //   // this.$q.loading.hide();
-          //   this.loader = false;
-          //   helperMethods.enablePointerEvents();
-          //   if (error.response.status == "400") {
-          //     this.$q.notify({
-          //       color: "negative",
-          //       position: "center",
-          //       message: error.response.data.body,
-          //       icon: "report_problem",
-          //       iconColor: "white",
-          //       timeout: 1000,
-          //       progress: true,
-          //     });
-          //   } else {
-          //     this.$q.notify({
-          //       color: "negative",
-          //       position: "center",
-          //       message: "Error Scheduling Room",
-          //       icon: "report_problem",
-          //       iconColor: "white",
-          //       timeout: 1000,
-          //       progress: true,
-          //     });
-          //   }
-          // }
+          // this.loader = false;
+          // this.dateFrom = null;
+          // this.dateTo = null;
+          // this.remarks = null;
+          // this.dateRange = null;
+          // this.selectedRoomSched = null;
+          // this.timeFrom = null;
+          // this.timeTo = null;
+          // this.selectedDays = null;
+          // this.prof = null;
+          // this.selectedDepartment = null;
+          // this.selectedSemester = null;
+          // this.selectedSection = null;
+          // this.selectedSubject = null;
+          // this.capacity = null;
+          // this.searchText = "";
+          // this.step = 1;
         })
         .onDismiss(() => {});
     },

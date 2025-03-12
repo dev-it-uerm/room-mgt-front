@@ -54,11 +54,13 @@ module.exports = configure(function (/* ctx */) {
       publicPath: "/room-xpert/",
       // analyze: true,
       env: {
+        Platform: "PROD",
         APP_NAME: "Room Management",
-        BACKEND_REST_API_URL: "https://localapi.uerm.edu.ph:8081",
-        // BACKEND_REST_API_URL: "http://10.107.0.11:4433",
-        IMAGE_REST_API_URL:
-          "https://localapi.uerm.edu.ph:8081/personnels/picture/",
+        RestApiLocal: "http://10.107.0.11:3344",
+        RestApiProd: "https://localapi.uerm.edu.ph:8081",
+        // IMAGE_REST_API_URL:
+        //   "https://localapi.uerm.edu.ph:8081/personnels/picture/",
+        ImageApi: "https://localapi.uerm.edu.ph:8081/personnels/picture/",
         BACKEND_REST_API_TIMEOUT: 50000,
         START_NOTIF_DAYS: 180,
       }, // rawDefine: {}

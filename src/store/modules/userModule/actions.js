@@ -1,19 +1,21 @@
 import axios from "axios";
 import { Cookies } from "quasar";
 import helperMethods from "src/helperMethods";
+import helper from "../../helperApi";
 
-const APIUrl = process.env.BACKEND_REST_API_URL;
+const APIUrl = process.env.RestApiLocal;
 
 export default {
   async login({ commit, dispatch }, data) {
     try {
-      const response = await axios.post(`${APIUrl}/room-mgt/login`, data);
+      // const response = await axios.post(`${APIUrl}/room-mgt/login`, data);
+      const response = await helper.endPointCallPost("login", data);
       let token = response.data;
       const expirationDate = new Date();
       expirationDate.setDate(expirationDate.getDate() + 3);
       helperMethods.createCookie("token", token, {
         expires: expirationDate,
-        path: "/",
+        path: "/login",
       });
       dispatch("setNewValues", token);
     } catch (error) {
@@ -25,6 +27,7 @@ export default {
   setNewValues({ commit }, token) {
     try {
       const [, payloadBase64] = token.split(".");
+
       const cleanedPayload = payloadBase64
         .replace(/-/g, "+")
         .replace(/_/g, "/");

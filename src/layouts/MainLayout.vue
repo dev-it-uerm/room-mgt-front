@@ -154,7 +154,7 @@ export default defineComponent({
       app_name: process.env.APP_NAME,
       essentialLinks: linksList,
       drawer: false,
-      imageApi: process.env.IMAGE_REST_API_URL,
+      imageApi: process.env.ImageApi,
       loader: false,
     };
   },

@@ -271,7 +271,7 @@
           >
           </q-select> -->
 
-          <!-- <q-select
+          <q-select
             outlined
             v-model="formData.selectedDepartment"
             use-input
@@ -293,7 +293,7 @@
                 <q-item-section class="text-grey"> No results </q-item-section>
               </q-item>
             </template>
-          </q-select> -->
+          </q-select>
 
           <div v-if="autoBooking === false">
             <q-input
@@ -507,7 +507,8 @@ export default {
     roomOptions: Array,
     departmentOptions: Array,
     selectedSemester: Object,
-    selectedDateRange: [Object, String],
+    selectedDateRange: Object,
+    String,
     selectedDays: Object,
     selectedRoomSched: Object,
     selectedDates: Object,
@@ -789,7 +790,7 @@ export default {
         selectedSemester: this.formData.selectedSemester.sEM_CODE,
         selectedSubject: this.formData.selectedSubject.subjectCode,
         selectedDays: this.formData.selectedDays,
-        // department: this.formData.selectedDepartment.deptLabel,
+        department: this.formData.selectedDepartment.deptCode,
         selectedSection: this.formData.selectedSection.section,
         facultyName: this.formData.facultyName,
         capacity: this.formData.capacity,

@@ -139,15 +139,6 @@ export default {
         });
         return;
       }
-      // this.$q.loading.show({
-      //   spinner: QSpinnerIos,
-      //   message: "Logging In",
-      //   messageColor: "blue-10",
-      //   backgroundColor: "grey-1",
-      //   spinnerColor: "blue-10",
-      //   customClass: "custom-loading-style",
-      //   spinnerSize: "7em",
-      // });
       this.loader = true;
       try {
         const data = {
@@ -168,10 +159,9 @@ export default {
           Cookies.remove("password");
           Cookies.remove("rememberMe");
         }
-        this.loader = true;
-        return this.$router.push("/");
+        this.loader = false;
+        this.$router.push("/");
       } catch (error) {
-        console.log(error);
         // this.$q.loading.hide();
         this.loader = false;
         if (error.response.status == "401") {
