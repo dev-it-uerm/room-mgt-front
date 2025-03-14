@@ -168,7 +168,6 @@
       </template>
     </template>
   </q-calendar-month>
-
   <q-dialog v-model="schedDialog" full-width>
     <q-card
       :class="[
@@ -388,7 +387,7 @@ export default {
           name: "intervals",
           label: "Time",
           align: "center",
-          field: "intervals",
+          field: "formattedIntervals",
           sortable: false,
         },
       ],

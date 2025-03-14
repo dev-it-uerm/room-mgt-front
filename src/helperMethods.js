@@ -350,31 +350,43 @@ const parseDateTimeCreated = (dateTimeCreated) => {
 
 const convertTimeTo12HourFormat = (time) => {
   const [hours, minutes] = time.split(":");
-  let period = "am";
-
   let hour = parseInt(hours);
+  let period = hour >= 12 ? "pm" : "am";
 
   if (hour === 0) {
-    hour = 12;
-  } else if (hour === 12) {
-    period = "pm";
+    hour = 12; // Midnight case (00:00 -> 12:00 AM)
   } else if (hour > 12) {
-    hour -= 12;
-    period = "pm";
-  } else if (hour === 12) {
-    period = "pm";
+    hour -= 12; // Convert 24-hour format to 12-hour
   }
 
   return `${hour}:${minutes}${period}`;
 };
 
 const formatIntervals = (intervals) => {
+  console.log("Raw Intervals:", intervals); // Debugging line
+
+  if (!intervals || typeof intervals !== "string") {
+    console.error("Invalid intervals input:", intervals);
+    return "";
+  }
+
   return intervals
     .split(",")
     .map((interval) => {
+      if (!interval.includes("-")) {
+        console.error("Invalid interval format:", interval);
+        return interval;
+      }
+
       const [start, end] = interval.split("-");
+
+      if (!start || !end) {
+        return interval;
+      }
+
       const formattedStart = convertTimeTo12HourFormat(start);
       const formattedEnd = convertTimeTo12HourFormat(end);
+
       return `${formattedStart}-${formattedEnd}`;
     })
     .join(", ");

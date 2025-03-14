@@ -49,6 +49,7 @@
   </q-calendar-month>
 
   <q-dialog v-model="schedDialog">
+    {{ computedSelectedSchedule }}
     <q-card
       :class="[
         $q.screen.name + '-text',
@@ -245,7 +246,7 @@ export default {
           name: "intervals",
           label: "Time",
           align: "center",
-          field: "intervals",
+          field: "formattedIntervals",
           sortable: false,
         },
       ],

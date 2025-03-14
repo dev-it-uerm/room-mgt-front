@@ -193,8 +193,12 @@ export default {
           const fullDay = helperMethods.selectedDayData(days);
 
           const details = section
-            ? `Section: ${section}, Days: ${fullDay}, Time: ${intervals}`
-            : `Days: ${fullDay}, Time: ${intervals}`;
+            ? `Section: ${section}, Days: ${fullDay}, Time: ${helperMethods.formatIntervals(
+                intervals
+              )}`
+            : `Days: ${fullDay}, Time: ${helperMethods.formatIntervals(
+                intervals
+              )}`;
 
           const event = {
             active: active,
