@@ -20,11 +20,27 @@
     </q-header>
 
     <q-drawer style="position: relative" v-model="drawer" show-if-above>
+      <q-btn
+        flat
+        round
+        dense
+        size="lg"
+        icon="close"
+        class="drawerBtn"
+        @click="toggleDrawer"
+      />
+
       <div
         class="q-pa-sm text-center drawerStyle"
-        style="position: absolute; inset: 10px; border-radius: 10px"
+        style="
+          position: absolute;
+          inset: 10px;
+          border-radius: 10px;
+          display: flex;
+          flex-direction: column;
+        "
       >
-        <q-list>
+        <div>
           <q-card-section style="margin: 75px 0">
             <div class="avatar-container">
               <q-avatar size="160px" class="absolute-center">
@@ -38,34 +54,38 @@
             <br />
             <div class="q-mt-sm">{{ employeeDeptDesc }}</div>
           </q-item-label>
-          <q-item class="flex column">
-            <EssentialLink
-              style="width: 100%"
-              v-for="link in essentialLinks"
-              :key="link.title"
-              v-bind="link"
-            />
-          </q-item>
-          <q-item class="clickable">
-            <q-btn
-              style="width: 100%"
-              class="bg-blue-10 text-white"
-              name="logout"
-              label="logout"
-              @click="onLogout()"
-            >
-            </q-btn>
-          </q-item>
-        </q-list>
-      </div>
+        </div>
 
-      <div style="position: absolute; bottom: 0; left: 0; width: 100%">
-        <div style="display: flex; justify-content: center">
-          <img
-            src="../assets/images/uerm-hospital-logo.png"
-            alt="avatar"
-            style="width: 70%; height: 150px"
+        <div class="drawerMenu">
+          <q-list>
+            <q-item class="flex column">
+              <EssentialLink
+                style="width: 100%"
+                v-for="link in essentialLinks"
+                :key="link.title"
+                v-bind="link"
+              />
+            </q-item>
+          </q-list>
+        </div>
+        <div style="padding: 10px; text-align: center; flex-shrink: 0">
+          <q-btn
+            style="width: 100%"
+            class="bg-blue-10 text-white"
+            name="logout"
+            label="logout"
+            @click="onLogout()"
           />
+        </div>
+
+        <div style="text-align: center; flex-shrink: 0">
+          <div style="display: flex; justify-content: center">
+            <img
+              src="../assets/images/uerm-hospital-logo.png"
+              alt="logo"
+              style="width: 60%; height: auto; max-height: 100px"
+            />
+          </div>
         </div>
       </div>
     </q-drawer>
