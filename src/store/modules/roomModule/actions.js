@@ -106,13 +106,17 @@ export default {
     }
   },
 
-  async getSubjectCode({ commit }) {
+  async getSubjectCode({ commit }, data) {
     try {
       // const response = await axios.get(`${APIUrl}/room-mgt/subject-code`, {
       //   headers: { Authorization: `Bearer ${Cookies.get("token")}` },
       // });
       const token = Cookies.get("token");
-      const response = await helperApi.endPointCallGet("subject-code", token);
+      const response = await helperApi.endPointCallGetParameter(
+        "subject-code",
+        data,
+        token
+      );
       commit("SET_SUBJECTCODE_OPTIONS", response);
     } catch (error) {
       console.error("Error Getting Subject Code");

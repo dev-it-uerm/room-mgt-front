@@ -612,30 +612,7 @@
 }
 
 .drawerStyle {
-  box-shadow: 0 0 3px $blue-10;
-}
-
-.drawerMenu {
-  flex: 1;
-  overflow: hidden;
-}
-
-.drawerMenu:hover {
-  overflow: auto;
-}
-
-.drawerMenu::-webkit-scrollbar {
-  width: 8px;
-}
-
-.drawerMenu::-webkit-scrollbar-thumb {
-  background-color: $primary;
-  border-radius: 6px;
-}
-
-.drawerMenu::-webkit-scrollbar-track {
-  background-color: $blue-2;
-  border-radius: 6px;
+  box-shadow: 0 0px 5px $grey-6;
 }
 
 .drawerBtn {
@@ -645,6 +622,21 @@
   z-index: 1;
   color: $blue-10;
 }
+
+.drawerScroll::-webkit-scrollbar {
+  width: 8px;
+}
+
+.drawerScroll::-webkit-scrollbar-thumb {
+  background-color: $primary;
+  border-radius: 6px;
+}
+
+.drawerScroll::-webkit-scrollbar-track {
+  background-color: $blue-2;
+  border-radius: 6px;
+}
+
 
 // .login-card {
 //   width: 400px;

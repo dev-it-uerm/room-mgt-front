@@ -102,6 +102,30 @@
             </q-input>
           </div> -->
 
+          <q-select
+            outlined
+            v-model="formData.selectedDepartment"
+            use-input
+            input-debounce="0"
+            label="Department"
+            :options="departments"
+            style="margin-bottom: 5px"
+            behavior="menu"
+            fill-input
+            @filter="filterFn"
+            clearable
+            class="bg-grey-3"
+            option-value="deptCode"
+            option-label="deptLabel"
+            hide-selected
+          >
+            <template v-slot:no-option>
+              <q-item>
+                <q-item-section class="text-grey"> No results </q-item-section>
+              </q-item>
+            </template>
+          </q-select>
+
           <div v-if="classroom">
             <!-- <q-select
               class="bg-grey-3 q-mb-xs"
@@ -116,6 +140,32 @@
               option-value="sEM_CODE"
               option-label="sEM_DESC"
             /> -->
+            <!-- <q-select
+              outlined
+              v-model="formData.selectedDepartment"
+              use-input
+              input-debounce="0"
+              label="Department"
+              :options="departments"
+              style="margin-bottom: 5px"
+              behavior="menu"
+              fill-input
+              @filter="filterFn"
+              clearable
+              class="bg-grey-3"
+              option-value="deptCode"
+              option-label="deptLabel"
+              hide-selected
+            >
+              <template v-slot:no-option>
+                <q-item>
+                  <q-item-section class="text-grey">
+                    No results
+                  </q-item-section>
+                </q-item>
+              </template>
+            </q-select> -->
+
             <q-select
               class="bg-grey-3 q-mb-xs"
               v-model="formData.selectedSemester"
@@ -127,8 +177,10 @@
               @filter="filterFn"
               :options="semester"
               input-debounce="0"
+              @update:model-value="(val) => getSubjectCode(val)"
               option-value="sEM_CODE"
               option-label="semYear"
+              :disable="!formData.selectedDepartment"
             />
 
             <q-select
@@ -147,6 +199,7 @@
               @update:model-value="getSections()"
               option-value="subjectCode"
               option-label="subjectCodeDescription"
+              :disable="!formData.selectedSemester"
             />
 
             <q-select
@@ -164,6 +217,7 @@
               option-label="section"
               :options="section"
               multiple
+              :disable="!formData.selectedSubject"
             />
 
             <!-- <q-btn
@@ -270,30 +324,6 @@
             :options="section"
           >
           </q-select> -->
-
-          <q-select
-            outlined
-            v-model="formData.selectedDepartment"
-            use-input
-            input-debounce="0"
-            label="Department"
-            :options="departments"
-            style="margin-bottom: 5px"
-            behavior="menu"
-            fill-input
-            @filter="filterFn"
-            clearable
-            class="bg-grey-3"
-            option-value="deptCode"
-            option-label="deptLabel"
-            hide-selected
-          >
-            <template v-slot:no-option>
-              <q-item>
-                <q-item-section class="text-grey"> No results </q-item-section>
-              </q-item>
-            </template>
-          </q-select>
 
           <div v-if="autoBooking === false">
             <q-input
@@ -503,7 +533,7 @@ let dOptions = [
 export default {
   props: {
     semesterOptions: Array,
-    subjectOptions: Array,
+    // subjectOptions: Array,
     roomOptions: Array,
     departmentOptions: Array,
     selectedSemester: Object,
@@ -550,6 +580,7 @@ export default {
   computed: {
     ...mapGetters({
       sectionOptions: "roomModule/getSections",
+      subjectOptions: "roomModule/getSubjectCode",
     }),
     selectedDaysString() {
       return this.selectedDays.map((day) => day.label).join(", ");
@@ -740,6 +771,19 @@ export default {
       });
     },
 
+    async getSubjectCode(selectedSemester) {
+      try {
+        const data = {
+          semester:
+            this.formData.selectedSemester.semYearFrom +
+            this.formData.selectedSemester.semCode,
+        };
+        await this.$store.dispatch("roomModule/getSubjectCode", data);
+      } catch (error) {
+        console.error("Failed getting all the subject code", error);
+      }
+    },
+
     async getSections() {
       try {
         // if (!lastSection.semester) {
@@ -791,11 +835,15 @@ export default {
         selectedSubject: this.formData.selectedSubject.subjectCode,
         selectedDays: this.formData.selectedDays,
         department: this.formData.selectedDepartment.deptCode,
-        selectedSection: this.formData.selectedSection.section,
+        selectedSection: this.formData.selectedSection
+          ? this.formData.selectedSection.section
+          : null,
         facultyName: this.formData.facultyName,
         capacity: this.formData.capacity,
         remarks: this.formData.remarks,
       };
+
+      console.log(data);
       this.$emit("insert-data", data);
       this.formData = {};
     },

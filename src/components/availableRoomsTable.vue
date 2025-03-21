@@ -266,13 +266,13 @@ export default {
           field: "building",
           width: "250px",
         },
-        // {
-        //   name: "dateRange",
-        //   label: "Date Range",
-        //   align: "center",
-        //   field: "dateRange",
-        //   width: "150px",
-        // },
+        {
+          name: "capacity",
+          label: "Date Range",
+          align: "center",
+          field: "capacity",
+          width: "150px",
+        },
         {
           name: "availableTime",
           label: "Available Time Slot",
@@ -334,7 +334,7 @@ export default {
         return this.selectedRoomTime.map((row) => {
           if (row.intervals) {
             row.formattedIntervals = helperMethods.formatIntervals(
-              row.intervals,
+              row.intervals
             );
           }
           return row;
@@ -358,7 +358,7 @@ export default {
       update(() => {
         const needle = val.toLowerCase();
         this.days = daysOptions.filter(
-          (option) => option.label.toLowerCase().indexOf(needle) > -1,
+          (option) => option.label.toLowerCase().indexOf(needle) > -1
         );
       });
     },
@@ -413,7 +413,7 @@ export default {
         for (const slot of room.freeTimeSlots) {
           const existingSchedule = mergedSchedules.find(
             (schedule) =>
-              schedule.date === slot.date && schedule.day === slot.day,
+              schedule.date === slot.date && schedule.day === slot.day
           );
 
           if (existingSchedule) {

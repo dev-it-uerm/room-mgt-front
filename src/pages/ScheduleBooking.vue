@@ -52,21 +52,49 @@
                   prefix="2"
                   color="amber-8"
                 >
-                  <q-input
-                    dense
-                    class="inputClass q-mb-sm"
-                    v-model="searchText"
-                    label="Search"
-                    label-color="blue-10"
-                    outlined
-                    standout="bg-amber-8 text-white"
-                    clearable
-                    :class="[
-                      $q.screen.name + '-text2',
-                      { 'search-text': searchText.length > 0 },
-                    ]"
-                    @clear="clearSearchText"
-                  />
+                  <div class="row">
+                    <div
+                      class="q-pa-sm"
+                      :class="$q.screen.gt.sm ? 'col-6' : 'col-12'"
+                    >
+                      <q-input
+                        class="inputClass q-mb-sm"
+                        v-model="searchText"
+                        label="Search Name"
+                        label-color="blue-10"
+                        dense
+                        outlined
+                        standout
+                        clearable
+                        :class="[
+                          $q.screen.name + '-text2',
+                          { 'search-text': searchText.length > 0 },
+                        ]"
+                        @clear="clearSearchText('nameSearch')"
+                      />
+                    </div>
+                    <div
+                      class="q-pa-sm"
+                      :class="$q.screen.gt.sm ? 'col-6' : 'col-12'"
+                    >
+                      <q-input
+                        class="inputClass q-mb-sm"
+                        v-model="capacitySearch"
+                        label="Capacity"
+                        label-color="blue-10"
+                        dense
+                        outlined
+                        standout
+                        clearable
+                        type="number"
+                        :class="[
+                          $q.screen.name + '-text2',
+                          { 'search-text': searchText.length > 0 },
+                        ]"
+                        @clear="clearSearchText('capacity')"
+                      />
+                    </div>
+                  </div>
                   <availableTable
                     :computedAvailableRooms="computedAvailableRooms"
                     :dateRange="dateRange"
@@ -192,6 +220,7 @@ export default {
       loading: true,
       loadingCounter: null,
       loader: false,
+      capacitySearch: null,
     };
   },
 
@@ -221,7 +250,7 @@ export default {
         const query = this.searchText.toLowerCase();
         return this.availableRooms
           .filter((row) => {
-            return (
+            const matchesSearch =
               (row.roomName &&
                 row.roomName.toString().toLowerCase().includes(query)) ||
               (row.building &&
@@ -230,8 +259,12 @@ export default {
                 row.roomTypeDescription
                   .toString()
                   .toLowerCase()
-                  .includes(query))
-            );
+                  .includes(query));
+
+            const matchesCapacity =
+              !this.capacitySearch || row.capacity >= this.capacitySearch;
+
+            return matchesSearch && matchesCapacity;
           })
           .map((row) => {
             const dateRange = `${row.fromDate} - ${row.toDate}`;
@@ -258,6 +291,7 @@ export default {
             return 0;
           });
       }
+      return [];
     },
 
     selectedDateRange() {

@@ -363,8 +363,6 @@ const convertTimeTo12HourFormat = (time) => {
 };
 
 const formatIntervals = (intervals) => {
-  console.log("Raw Intervals:", intervals); // Debugging line
-
   if (!intervals || typeof intervals !== "string") {
     console.error("Invalid intervals input:", intervals);
     return "";

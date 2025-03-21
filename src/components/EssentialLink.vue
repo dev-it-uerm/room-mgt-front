@@ -15,7 +15,7 @@
           class="q-pr-md"
           color="blue-10"
         />
-        <span class="text-blue-10 title">{{ title }}</span>
+        <span class="text-blue-10 title text-bold">{{ title }}</span>
       </span>
     </q-btn>
   </q-btn-group>

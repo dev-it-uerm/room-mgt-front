@@ -1,10 +1,10 @@
 export default {
   SET_LOGIN_DATA(state, data) {
-    state.token = data.token;
-    state.employeeId = data.employeeId;
-    state.employeeFullName = data.employeeFullName;
-    state.employeeDeptCode = data.employeeDeptCode;
-    state.employeeDeptDesc = data.employeeDeptDesc;
+    state.token = data.token || null;
+    state.employeeId = data.employeeId || null;
+    state.employeeFullName = data.employeeFullName || null;
+    state.employeeDeptCode = data.employeeDeptCode || null;
+    state.employeeDeptDesc = data.employeeDeptDesc || null;
   },
 
   SET_LOGIN_DATA_DEFAULT(state) {

@@ -52,21 +52,50 @@
                   prefix="2"
                   color="amber-8"
                 >
-                  <q-input
-                    class="inputClass q-mb-sm"
-                    v-model="searchText"
-                    label="Search"
-                    label-color="blue-10"
-                    dense
-                    outlined
-                    standout="bg-amber-8 text-white"
-                    clearable
-                    :class="[
-                      $q.screen.name + '-text2',
-                      { 'search-text': searchText.length > 0 },
-                    ]"
-                    @clear="clearSearchText"
-                  />
+                  <div class="row">
+                    <div
+                      class="q-pa-sm"
+                      :class="$q.screen.gt.sm ? 'col-6' : 'col-12'"
+                    >
+                      <q-input
+                        class="inputClass q-mb-sm"
+                        v-model="searchText"
+                        label="Search Name"
+                        label-color="blue-10"
+                        dense
+                        outlined
+                        standout
+                        clearable
+                        :class="[
+                          $q.screen.name + '-text2',
+                          { 'search-text': searchText.length > 0 },
+                        ]"
+                        @clear="clearSearchText('nameSearch')"
+                      />
+                    </div>
+                    <div
+                      class="q-pa-sm"
+                      :class="$q.screen.gt.sm ? 'col-6' : 'col-12'"
+                    >
+                      <q-input
+                        class="inputClass q-mb-sm"
+                        v-model="capacitySearch"
+                        label="Capacity"
+                        label-color="blue-10"
+                        dense
+                        outlined
+                        standout
+                        clearable
+                        type="number"
+                        :class="[
+                          $q.screen.name + '-text2',
+                          { 'search-text': searchText.length > 0 },
+                        ]"
+                        @clear="clearSearchText('capacity')"
+                      />
+                    </div>
+                  </div>
+
                   <availableTable
                     :computedAvailableRooms="computedAvailableRooms"
                     :dateRange="dateRange"
@@ -84,7 +113,6 @@
                 >
                   <dataCard
                     :semesterOptions="semester"
-                    :subjectOptions="subjects"
                     :roomOptions="roomType"
                     :departmentOptions="departments"
                     :selectedSemester="selectedSemester"
@@ -258,6 +286,7 @@ export default {
       loading: true,
       loadingCounter: null,
       loader: false,
+      capacitySearch: null,
     };
   },
 
@@ -289,7 +318,7 @@ export default {
         const query = this.searchText.toLowerCase();
         return this.availableRooms
           .filter((row) => {
-            return (
+            const matchesSearch =
               (row.roomName &&
                 row.roomName.toString().toLowerCase().includes(query)) ||
               (row.building &&
@@ -298,8 +327,12 @@ export default {
                 row.roomTypeDescription
                   .toString()
                   .toLowerCase()
-                  .includes(query))
-            );
+                  .includes(query));
+
+            const matchesCapacity =
+              !this.capacitySearch || row.capacity >= this.capacitySearch;
+
+            return matchesSearch && matchesCapacity;
           })
           .map((row) => {
             const dateRange = `${row.fromDate} - ${row.toDate}`;
@@ -326,6 +359,7 @@ export default {
             return 0;
           });
       }
+      return [];
     },
 
     selectedDateRange() {
@@ -395,7 +429,7 @@ export default {
       this.selectedDates = data.selectedDates;
       this.selectedSection = data.selectedSection;
       this.selectedSemester = data.selectedSemester;
-      // this.selectedDepartment = data.selectedDepartment;
+      this.selectedDepartment = data.selectedDepartment;
       this.selectedSubject = data.selectedSubject;
       this.capacity = data.capacity;
       this.prof = data.facultyName;
@@ -404,8 +438,12 @@ export default {
       this.timeTo = data.timeTo;
     },
 
-    clearSearchText() {
-      this.searchText = "";
+    clearSearchText(condition) {
+      if (condition === "nameSearch") {
+        this.searchText = "";
+      } else {
+        this.capacitySearch = null;
+      }
     },
 
     formatFreeTimeSlots(value) {
@@ -540,7 +578,7 @@ export default {
       try {
         await this.$store.dispatch("roomModule/getRoomTypes");
         this.loadingCounter++;
-        if (this.loadingCounter === 4) {
+        if (this.loadingCounter === 3) {
           this.loading = false;
         }
       } catch (error) {
@@ -548,18 +586,18 @@ export default {
       }
     },
 
-    async getSubjectCode() {
-      try {
-        await this.$store.dispatch("roomModule/getSubjectCode");
-        this.loadingCounter++;
-        if (this.loadingCounter === 4) {
-          this.loading = false;
-        }
-        this.subjects = this.subjectOptions;
-      } catch (error) {
-        console.error("Failed getting all the subject code");
-      }
-    },
+    // async getSubjectCode() {
+    //   try {
+    //     await this.$store.dispatch("roomModule/getSubjectCode");
+    //     this.loadingCounter++;
+    //     if (this.loadingCounter === 3) {
+    //       this.loading = false;
+    //     }
+    //     this.subjects = this.subjectOptions;
+    //   } catch (error) {
+    //     console.error("Failed getting all the subject code");
+    //   }
+    // },
 
     async getavailableRoom() {
       let data = null;
@@ -590,8 +628,8 @@ export default {
           toDate: item.date,
           days: item.day,
           subjectCode: this.selectedSubject,
-          section: this.selectedSection,
-          // department: this.selectedDepartment.deptCode,
+          section: this.selectedSection ? this.selectedSection : null,
+          department: this.selectedDepartment.deptCode,
           intervals: interval,
           facultyName: this.prof,
           remarks: this.remarks,
@@ -607,7 +645,7 @@ export default {
         days: await helperMethods.selectedDaysToString(this.selectedDays),
         intervals: interval,
         remarks: this.remarks,
-        // department: this.selectedDepartment.deptCode,
+        department: this.selectedDepartment.deptCode,
         subjectCode: this.selectedSubject,
         section: this.selectedSection ? this.selectedSection : null,
       };
@@ -694,7 +732,6 @@ export default {
                   spinnerSize: "7em",
                 });
                 helperMethods.disablePointerEvents();
-
                 await this.$store.dispatch(
                   "roomModule/createCustomScheduleBooking",
                   data
@@ -728,7 +765,7 @@ export default {
                 this.timeTo = null;
                 this.selectedDays = null;
                 this.prof = null;
-                // this.selectedDepartment = null;
+                this.selectedDepartment = null;
                 this.selectedSemester = null;
                 this.selectedSection = null;
                 this.selectedSubject = null;
@@ -765,23 +802,6 @@ export default {
             }
           }
           helperMethods.enablePointerEvents();
-          // this.loader = false;
-          // this.dateFrom = null;
-          // this.dateTo = null;
-          // this.remarks = null;
-          // this.dateRange = null;
-          // this.selectedRoomSched = null;
-          // this.timeFrom = null;
-          // this.timeTo = null;
-          // this.selectedDays = null;
-          // this.prof = null;
-          // // this.selectedDepartment = null;
-          // this.selectedSemester = null;
-          // this.selectedSection = null;
-          // this.selectedSubject = null;
-          // this.capacity = null;
-          // this.searchText = "";
-          // this.step = 1;
         })
         .onDismiss(() => {});
     },
@@ -790,7 +810,7 @@ export default {
       try {
         await this.$store.dispatch("roomModule/getDepartments");
         this.loadingCounter++;
-        if (this.loadingCounter === 4) {
+        if (this.loadingCounter === 3) {
           this.loading = false;
         }
         this.departments = this.departmentOptions;
@@ -803,7 +823,7 @@ export default {
       try {
         await this.$store.dispatch("roomModule/getSemester");
         this.loadingCounter++;
-        if (this.loadingCounter === 4) {
+        if (this.loadingCounter === 3) {
           this.loading = false;
         }
         this.semester = this.semesterOptions;
@@ -815,7 +835,7 @@ export default {
 
   created() {
     this.getRoomTypes();
-    this.getSubjectCode();
+    // this.getSubjectCode();
     this.getDepartments();
     this.getSemester();
   },

@@ -175,6 +175,7 @@
         $q.screen.name + '-widthSched',
         $q.screen.name + '-heightSched',
       ]"
+      style="border-radius: 10px"
     >
       <q-card-section class="bg-blue-10 row items-center">
         <div class="text-white text-bold">Schedules</div>

@@ -24,14 +24,14 @@
         flat
         round
         dense
-        size="lg"
+        size="md"
         icon="close"
         class="drawerBtn"
         @click="toggleDrawer"
       />
 
       <div
-        class="q-pa-sm text-center drawerStyle"
+        class="q-pa-none text-center inputClass"
         style="
           position: absolute;
           inset: 10px;
@@ -40,7 +40,7 @@
           flex-direction: column;
         "
       >
-        <div>
+        <div style="position: sticky; top: 0">
           <q-card-section style="margin: 75px 0">
             <div class="avatar-container">
               <q-avatar size="160px" class="absolute-center">
@@ -50,13 +50,24 @@
           </q-card-section>
 
           <q-item-label header class="text-center text-black">
-            <span class="text-bold">{{ employeeFullName }}</span>
-            <br />
-            <div class="q-mt-sm">{{ employeeDeptDesc }}</div>
+            <span class="text-subtitle1 text-bold q-pa-none">
+              {{ employeeFullName }}
+            </span>
+            <div class="text-subtitle2 text-grey-8 q-pa-none">
+              {{ employeeDeptDesc }}
+            </div>
           </q-item-label>
         </div>
 
-        <div class="drawerMenu">
+        <div
+          class="drawerScroll q-pa-none"
+          style="
+            flex: 1;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+          "
+        >
           <q-list>
             <q-item class="flex column">
               <EssentialLink
@@ -71,7 +82,8 @@
         <div style="padding: 10px; text-align: center; flex-shrink: 0">
           <q-btn
             style="width: 100%"
-            class="bg-blue-10 text-white"
+            class="bg-negative text-white"
+            icon="logout"
             name="logout"
             label="logout"
             @click="onLogout()"
