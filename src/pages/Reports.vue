@@ -7,7 +7,15 @@
             <div v-if="loading">
               <SkeletonLoader :schedule="true" :bookedRooms="false" />
             </div>
-            <q-card v-else>
+            <div v-else>
+              <reportComponent
+                :buildingOptions="buildings"
+                :roomOptions="rooms"
+                :departmentOptions="departments"
+              />
+            </div>
+
+            <!-- <q-card v-else>
               <q-tabs
                 v-model="tab"
                 indicator-color="amber-8"
@@ -51,7 +59,7 @@
                   />
                 </q-tab-panel>
               </q-tab-panels>
-            </q-card>
+            </q-card> -->
           </div>
         </div>
       </div>

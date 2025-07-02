@@ -5,14 +5,14 @@ self.onmessage = async (event) => {
   const { type, data } = event.data;
 
   try {
-    const result = await generateExcel(data);
+    const result = await generateExcelType(data);
     self.postMessage({ success: true, result });
   } catch (error) {
     self.postMessage({ success: false, error: error.message });
   }
 };
 
-const parseSchedule = async (combinedSchedule) => {
+const parseScheduleUtil = async (combinedSchedule) => {
   const regex = /\(([^)]+)\)/g;
   let match;
   const parsed = [];
@@ -58,7 +58,7 @@ const parseSchedule = async (combinedSchedule) => {
   }));
 };
 
-const generateExcel = async (data) => {
+const generateExcelType = async (data) => {
   try {
     const workbook = new ExcelJS.Workbook();
 
@@ -70,6 +70,7 @@ const generateExcel = async (data) => {
 
     for (const roomId of Object.keys(groupedSchedules)) {
       const roomData = groupedSchedules[roomId][0];
+
       const sheetName = `${roomData.name} (${roomId})`.substring(0, 31);
       const worksheet = workbook.addWorksheet(sheetName);
 
@@ -122,7 +123,7 @@ const generateExcel = async (data) => {
         }
 
         for (const data of groupedSchedules[roomId]) {
-          const parsedSchedule = await parseSchedule(data.combinedSchedule);
+          const parsedSchedule = await parseScheduleUtil(data.combinedSchedule);
 
           for (const parsed of parsedSchedule) {
             const { sections, day, timeRange } = parsed;

@@ -98,7 +98,7 @@
             fill-input
             hide-selected
             clearable
-            label="Format"
+            label="Utilization Format"
             @filter="filterFn"
             option-value="value"
             option-label="label"
@@ -224,8 +224,9 @@ import { colors } from "quasar";
 const { getPaletteColor } = colors;
 
 let formatOptions = [
-  { label: "Week", value: "Weekly" },
-  { label: "Month", value: "Monthly" },
+  { label: "Daily", value: "Daily" },
+  { label: "Weekly", value: "Weekly" },
+  { label: "Monthly", value: "Monthly" },
 ];
 
 export default {
@@ -366,7 +367,7 @@ export default {
               );
             } else {
               this.w = new Worker(
-                new URL("../store/worker.js", import.meta.url)
+                new URL("../store/trialWorker.js", import.meta.url)
               );
             }
           }

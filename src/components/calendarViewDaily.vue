@@ -194,7 +194,7 @@
       </q-card-section>
       <q-card-section>
         <q-input
-          class="bg-amber-8"
+          class="inputClass"
           v-model="searchTextSched"
           placeholder="Search"
           outlined
@@ -325,14 +325,14 @@ export default {
           sortable: false,
           width: "175px",
         },
-        {
-          name: "roomDescription",
-          label: "Room Type",
-          align: "center",
-          field: "roomDescription",
-          sortable: false,
-          width: "225px",
-        },
+        // {
+        //   name: "roomDescription",
+        //   label: "Room Type",
+        //   align: "center",
+        //   field: "roomDescription",
+        //   sortable: false,
+        //   width: "225px",
+        // },
         {
           name: "buildingDescription",
           label: "Building",
@@ -533,7 +533,7 @@ export default {
               row.buildingDescription.toString().toLowerCase().includes(query))
           );
         })
-        .sort((a, b) => (a.roomName || "").localeCompare(b.roomName || ""));
+        .sort((a, b) => (a.intervals || "").localeCompare(b.intervals || ""));
     },
 
     formattedDate() {

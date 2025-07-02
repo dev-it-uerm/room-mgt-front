@@ -12,44 +12,34 @@ export default {
 
   methods: {
     renderCell(row, col) {
-      if (col.field === "dateRange") {
-        const dateRange = `${row.formatFrom} - ${row.formatTo}`;
-        return dateRange;
-      } else if (col.field === "remarks") {
-        if (row.remarks === null) {
-          return "-";
-        }
-        return row[col.field];
-      } else if (col.field === "subjectDescription") {
-        if (row.subjectDescription === null) {
-          return "-";
-        }
-        return row[col.field];
-      } else if (col.field === "subjectCode") {
-        if (row.subjectCode === null) {
-          return "-";
-        }
-        return row[col.field];
-      } else if (col.field === "section") {
-        if (row.section === null) {
-          return "-";
-        }
-        return row[col.field];
-      } else if (col.field === "professor") {
-        if (row.professor === null) {
-          return "-";
-        }
-        return row[col.field];
-      } else if (col.field === "subjectDescriptionCode") {
-        if (row.subjectCode === null && row.subjectDescription === null) {
-          return "-";
-        }
-        return `${row.subjectCode} - ${row.subjectDescription}`;
-      } else if (col.field === "days") {
-        return helpers.getFullDayName(row[col.field]);
-      } else {
-        return row[col.field];
+      const fieldHandlers = {
+        dateRange: () => `${row.formatFrom} - ${row.formatTo}`,
+        subjectDescriptionCode: () =>
+          row.subjectCode === null && row.subjectDescription === null
+            ? "-"
+            : `${row.subjectCode} - ${row.subjectDescription}`,
+        days: () => helpers.getFullDayName(row[col.field]),
+      };
+
+      const nullCheckFields = [
+        "remarks",
+        "subjectDescription",
+        "subjectCode",
+        "section",
+        "professor",
+        "buildingDescription",
+        "floor",
+      ];
+
+      if (fieldHandlers[col.field]) {
+        return fieldHandlers[col.field]();
       }
+
+      if (nullCheckFields.includes(col.field)) {
+        return row[col.field] === null ? "-" : row[col.field];
+      }
+
+      return row[col.field];
     },
   },
 };

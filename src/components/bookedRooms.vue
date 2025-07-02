@@ -82,7 +82,7 @@
       </q-card-section>
       <q-card-section>
         <q-input
-          class="bg-amber-8"
+          class="inputClass"
           v-model="searchTextSched"
           placeholder="Search"
           outlined

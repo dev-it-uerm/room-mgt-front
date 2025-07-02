@@ -53,7 +53,14 @@
             <span class="text-subtitle1 text-bold q-pa-none">
               {{ employeeFullName }}
             </span>
-            <div class="text-subtitle2 text-grey-8 q-pa-none">
+            <div
+              class="text-caption text-grey-8 q-pa-none"
+              style="
+                word-break: break-word;
+                white-space: normal;
+                line-height: 1;
+              "
+            >
               {{ employeeDeptDesc }}
             </div>
           </q-item-label>

@@ -843,7 +843,6 @@ export default {
         remarks: this.formData.remarks,
       };
 
-      console.log(data);
       this.$emit("insert-data", data);
       this.formData = {};
     },
