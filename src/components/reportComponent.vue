@@ -220,8 +220,6 @@
 import { mapGetters } from "vuex";
 import helperMethods from "src/helperMethods";
 import Loader from "../components/Loader.vue";
-import { colors } from "quasar";
-const { getPaletteColor } = colors;
 
 let formatOptions = [
   { label: "Daily", value: "Daily" },

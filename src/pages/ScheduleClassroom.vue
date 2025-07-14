@@ -196,7 +196,7 @@ export default {
           this.$q.notify({
             color: "negative",
             position: "center",
-            message: "Please Pick a Date Range / Semester",
+            message: "Please pick a date Range / Semester",
             icon: "report_problem",
             iconColor: "white",
             timeout: 1000,

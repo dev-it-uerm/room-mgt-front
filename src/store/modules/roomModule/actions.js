@@ -339,7 +339,7 @@ export default {
       //   headers: { Authorization: `Bearer ${Cookies.get("token")}` },
       // });
       const token = Cookies.get("token");
-      return await helperApi.endPointCallPost("getRooms", data, token);
+      return await helperApi.endPointCallPost("cancelSchedule", data, token);
     } catch (error) {
       console.log("Error cancelling schedule");
       throw error;

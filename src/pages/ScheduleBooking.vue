@@ -420,7 +420,7 @@ export default {
           this.$q.notify({
             color: "negative",
             position: "center",
-            message: "Please Pick a Date From and Date To",
+            message: "Please pick a date from and date to",
             icon: "report_problem",
             iconColor: "white",
             timeout: 1000,
@@ -444,7 +444,10 @@ export default {
 
         if (
           this.step === 3 &&
-          (!this.timeFrom || !this.timeTo || !this.remarks)
+          (!this.timeFrom ||
+            !this.timeTo ||
+            !this.remarks ||
+            this.remarks.trim() === "")
         ) {
           this.$q.notify({
             color: "negative",
