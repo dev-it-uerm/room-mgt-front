@@ -204,7 +204,62 @@
           :class="[$q.screen.name + '-text2']"
           @clear="clearSearchText"
         />
-        <q-virtual-scroll
+
+        <q-table
+          :rows="computedSelectedSchedule"
+          :columns="selectedCol"
+          row-key="doctorCode"
+          virtual-scroll
+          hide-pagination
+          :rows-per-page-options="[0]"
+          style="max-height: 700px"
+        >
+          <template v-slot:header>
+            <q-tr class="sticky-thead">
+              <q-th
+                v-for="col in selectedCol"
+                :key="col.name"
+                class="text-bold text-center"
+                :style="{ width: col.width || 'auto' }"
+              >
+                {{ col.label }}
+              </q-th>
+            </q-tr>
+          </template>
+
+          <template v-slot:body="props">
+            <q-tr
+              :props="props"
+              :key="props.row.subjectCode"
+              @click="employeeSched ? clickedRow(props.row) : null"
+              class="hover-row"
+            >
+              <q-td
+                v-for="col in selectedCol"
+                :key="col.name"
+                class="text-center"
+                :style="{
+                  width: col.width || 'auto',
+                  whiteSpace:
+                    col.name === 'subjectDescription' ||
+                    col.name === 'deptLabel' ||
+                    col.name === 'remarks'
+                      ? 'normal'
+                      : 'nowrap',
+                  wordWrap:
+                    col.name === 'subjectDescription' ||
+                    col.name === 'deptLabel' ||
+                    col.name === 'remarks'
+                      ? 'break-word'
+                      : 'normal',
+                }"
+              >
+                <renderCellDia :row="props.row" :col="col" />
+              </q-td>
+            </q-tr>
+          </template>
+        </q-table>
+        <!-- <q-virtual-scroll
           class="virtual-scroll"
           type="table"
           style="max-height: 700px"
@@ -252,7 +307,7 @@
               </q-td>
             </q-tr>
           </template>
-        </q-virtual-scroll>
+        </q-virtual-scroll> -->
       </q-card-section>
     </q-card>
   </q-dialog>

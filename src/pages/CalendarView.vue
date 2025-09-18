@@ -221,7 +221,7 @@ export default {
 
           const eventExists = this.events.some(
             (existingEvent) =>
-              existingEvent.deptCode === event.deptCode &&
+              existingEvent.department === event.department &&
               existingEvent.intervals === event.intervals &&
               existingEvent.fromDate === event.fromDate &&
               existingEvent.toDate === event.toDate &&

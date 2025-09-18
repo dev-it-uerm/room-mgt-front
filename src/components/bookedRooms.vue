@@ -57,7 +57,7 @@
     </template>
   </q-virtual-scroll>
 
-  <q-dialog v-model="schedDialog">
+  <q-dialog v-model="schedDialog" full-width>
     <q-card
       :class="[
         $q.screen.name + '-text',
@@ -92,7 +92,63 @@
           :class="[$q.screen.name + '-text2']"
           @clear="clearSearchText"
         />
-        <q-virtual-scroll
+
+        <q-table
+          :rows="computedSelectedSchedule"
+          :columns="selectedCol"
+          row-key="doctorCode"
+          virtual-scroll
+          hide-pagination
+          :rows-per-page-options="[0]"
+          style="max-height: 700px"
+        >
+          <template v-slot:header>
+            <q-tr class="sticky-thead">
+              <q-th
+                v-for="col in selectedCol"
+                :key="col.name"
+                class="text-bold text-center"
+                :style="{ width: col.width || 'auto' }"
+              >
+                {{ col.label }}
+              </q-th>
+            </q-tr>
+          </template>
+
+          <template v-slot:body="props">
+            <q-tr
+              :props="props"
+              :key="props.row.subjectCode"
+              @click="employeeSched ? clickedRow(props.row) : null"
+              class="hover-row"
+            >
+              <q-td
+                v-for="col in selectedCol"
+                :key="col.name"
+                class="text-center"
+                :style="{
+                  width: col.width || 'auto',
+                  whiteSpace:
+                    col.name === 'subjectDescription' ||
+                    col.name === 'deptLabel' ||
+                    col.name === 'remarks'
+                      ? 'normal'
+                      : 'nowrap',
+                  wordWrap:
+                    col.name === 'subjectDescription' ||
+                    col.name === 'deptLabel' ||
+                    col.name === 'remarks'
+                      ? 'break-word'
+                      : 'normal',
+                }"
+              >
+                <renderCellDia :row="props.row" :col="col" />
+              </q-td>
+            </q-tr>
+          </template>
+        </q-table>
+
+        <!-- <q-virtual-scroll
           class="virtual-scroll"
           type="table"
           style="max-height: 700px"
@@ -142,7 +198,7 @@
               </q-td>
             </q-tr>
           </template>
-        </q-virtual-scroll>
+        </q-virtual-scroll> -->
       </q-card-section>
     </q-card>
   </q-dialog>
@@ -199,6 +255,7 @@ import helperMethods from "src/helperMethods";
 import { QSpinnerIos } from "quasar";
 
 export default {
+  emits: ["successCancel"],
   props: {
     bookedRooms: Array,
     employeeSched: Boolean,
@@ -323,21 +380,26 @@ export default {
       if (Array.isArray(this.selectedSchedule)) {
         const query = this.searchTextSched.toLowerCase();
 
-        return this.selectedSchedule.filter((row) => {
-          if (row.intervals) {
-            row.formattedIntervals = helperMethods.formatIntervals(
-              row.intervals
+        return this.selectedSchedule
+          .filter((row) => {
+            if (row.intervals) {
+              row.formattedIntervals = helperMethods.formatIntervals(
+                row.intervals
+              );
+            }
+
+            const subjectCode = row.subjectCode?.toString().toLowerCase() ?? "";
+            const subjectDescription =
+              row.subjectDescription?.toString().toLowerCase() ?? "";
+
+            return (
+              subjectCode.includes(query) ||
+              subjectDescription.includes(query) ||
+              row.formatFrom.includes(query) ||
+              row.formatTo.includes(query)
             );
-          }
-
-          const subjectCode = row.subjectCode?.toString().toLowerCase() ?? "";
-          const subjectDescription =
-            row.subjectDescription?.toString().toLowerCase() ?? "";
-
-          return (
-            subjectCode.includes(query) || subjectDescription.includes(query)
-          );
-        });
+          })
+          .sort((a, b) => (a.intervals || "").localeCompare(b.intervals || ""));
       }
       return [];
     },
@@ -423,7 +485,10 @@ export default {
             });
 
             await this.$store.dispatch("roomModule/cancelSchedule", data);
+            this.$emit("successCancel");
             this.$q.loading.hide();
+            this.selectedSchedDia = false;
+            this.schedDialog = false;
             this.$q.notify({
               color: "green-8",
               position: "center",
@@ -449,6 +514,7 @@ export default {
               });
             }
             this.$q.loading.hide();
+            this.selectedSchedDia = false;
             helperMethods.enablePointerEvents();
             console.error(error);
           }

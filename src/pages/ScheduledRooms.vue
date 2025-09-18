@@ -258,9 +258,10 @@
                       </q-item>
                     </template>
                   </q-select>
+
                   <q-input
                     dense
-                    class="bg-amber-8"
+                    class="inputClass q-mb-sm"
                     v-model="searchTextEmployee"
                     placeholder="Search"
                     outlined
@@ -272,6 +273,7 @@
                   <bookedRooms
                     :bookedRooms="computedEmployeeBookedSchedule"
                     :employeeSched="true"
+                    @successCancel="successCancel"
                   />
                   <div
                     v-if="employeeBookedSchedule.length === 0 && !loading"
@@ -357,10 +359,88 @@ export default {
       );
     },
 
+    // filterAndSortBookedRooms(bookedScheduleArray, queryText, selectedStatus) {
+    //   if (Array.isArray(bookedScheduleArray)) {
+    //     const query = queryText.toLowerCase();
+
+    //     const status =
+    //       selectedStatus?.label?.toLowerCase() ?? selectedStatus?.toLowerCase();
+
+    //     const filteredRooms = bookedScheduleArray.filter((row) => {
+    //       return (
+    //         status === "all status" ||
+    //         row.booked.some((bookedEntry) =>
+    //           status === "active" ? bookedEntry.active : !bookedEntry.active
+    //         )
+    //       );
+    //     });
+
+    //     return (
+    //       filteredRooms
+    //         .filter((row) => {
+    //           console.log(row);
+
+    //           const roomNameMatches =
+    //             row.roomName &&
+    //             row.roomName.toString().toLowerCase().includes(query);
+
+    //           const roomTypeMatches =
+    //             row.roomDescription &&
+    //             row.roomDescription.toString().toLowerCase().includes(query);
+
+    //           const bookedMatches = row.booked.some(
+    //             (booking) =>
+    //               (booking.subjectCode &&
+    //                 booking.subjectCode
+    //                   .toString()
+    //                   .toLowerCase()
+    //                   .includes(query)) ||
+    //               (booking.subjectDescription &&
+    //                 booking.subjectDescription
+    //                   .toString()
+    //                   .toLowerCase()
+    //                   .includes(query))
+    //           );
+
+    //           return roomNameMatches || roomTypeMatches || bookedMatches;
+    //         })
+    //         // .map((room) => ({
+    //         //   ...room,
+    //         //   booked: room.booked.filter((booking) => {
+    //         //     if (selectedStatus === "") {
+    //         //       return booking.active === true;
+    //         //     } else if (selectedStatus === "Inactive") {
+    //         //       return booking.active === false;
+    //         //     } else {
+    //         //       return true;
+    //         //     }
+    //         //   }),
+    //         // }))
+    //         .sort((a, b) => {
+    //           const nameA = a.roomName || "";
+    //           const nameB = b.roomName || "";
+    //           const dateA = new Date(a.dateTimeCreated);
+    //           const dateB = new Date(b.dateTimeCreated);
+
+    //           const firstLetterA = nameA.charAt(0).toUpperCase();
+    //           const firstLetterB = nameB.charAt(0).toUpperCase();
+
+    //           if (firstLetterA < firstLetterB) return -1;
+    //           if (firstLetterA > firstLetterB) return 1;
+
+    //           if (dateA < dateB) return -1;
+    //           if (dateA > dateB) return 1;
+
+    //           return 0;
+    //         })
+    //     );
+    //   }
+    //   return [];
+    // },
+
     filterAndSortBookedRooms(bookedScheduleArray, queryText, selectedStatus) {
       if (Array.isArray(bookedScheduleArray)) {
         const query = queryText.toLowerCase();
-
         const status =
           selectedStatus?.label?.toLowerCase() ?? selectedStatus?.toLowerCase();
 
@@ -373,70 +453,157 @@ export default {
           );
         });
 
-        return (
-          filteredRooms
-            .filter((row) => {
-              const roomNameMatches =
-                row.roomName &&
-                row.roomName.toString().toLowerCase().includes(query);
+        return filteredRooms
+          .filter((row) => {
+            const roomNameMatches =
+              row.roomName &&
+              row.roomName.toString().toLowerCase().includes(query);
 
-              const roomTypeMatches =
-                row.roomDescription &&
-                row.roomDescription.toString().toLowerCase().includes(query);
+            const roomTypeMatches =
+              row.roomDescription &&
+              row.roomDescription.toString().toLowerCase().includes(query);
 
-              const bookedMatches = row.booked.some(
-                (booking) =>
-                  (booking.subjectCode &&
-                    booking.subjectCode
-                      .toString()
-                      .toLowerCase()
-                      .includes(query)) ||
-                  (booking.subjectDescription &&
-                    booking.subjectDescription
-                      .toString()
-                      .toLowerCase()
-                      .includes(query))
-              );
+            const bookedMatches = row.booked.some(
+              (booking) =>
+                (booking.subjectCode &&
+                  booking.subjectCode
+                    .toString()
+                    .toLowerCase()
+                    .includes(query)) ||
+                (booking.subjectDescription &&
+                  booking.subjectDescription
+                    .toString()
+                    .toLowerCase()
+                    .includes(query))
+            );
 
-              return roomNameMatches || roomTypeMatches || bookedMatches;
-            })
-            // .map((room) => ({
-            //   ...room,
-            //   booked: room.booked.filter((booking) => {
-            //     if (selectedStatus === "") {
-            //       return booking.active === true;
-            //     } else if (selectedStatus === "Inactive") {
-            //       return booking.active === false;
-            //     } else {
-            //       return true;
-            //     }
-            //   }),
-            // }))
-            .sort((a, b) => {
-              const nameA = a.roomName || "";
-              const nameB = b.roomName || "";
-              const dateA = new Date(a.dateTimeCreated);
-              const dateB = new Date(b.dateTimeCreated);
+            const fromDateMatches =
+              row.fromDate &&
+              new Date(row.fromDate).toISOString().slice(0, 10).includes(query);
 
-              const firstLetterA = nameA.charAt(0).toUpperCase();
-              const firstLetterB = nameB.charAt(0).toUpperCase();
+            const toDateMatches =
+              row.toDate &&
+              new Date(row.toDate).toISOString().slice(0, 10).includes(query);
 
-              if (firstLetterA < firstLetterB) return -1;
-              if (firstLetterA > firstLetterB) return 1;
+            return (
+              roomNameMatches ||
+              roomTypeMatches ||
+              bookedMatches ||
+              fromDateMatches ||
+              toDateMatches
+            );
+          })
+          .sort((a, b) => {
+            const nameA = a.roomName || "";
+            const nameB = b.roomName || "";
+            const dateA = new Date(a.dateTimeCreated);
+            const dateB = new Date(b.dateTimeCreated);
 
-              if (dateA < dateB) return -1;
-              if (dateA > dateB) return 1;
+            const firstLetterA = nameA.charAt(0).toUpperCase();
+            const firstLetterB = nameB.charAt(0).toUpperCase();
 
-              return 0;
-            })
-        );
+            if (firstLetterA < firstLetterB) return -1;
+            if (firstLetterA > firstLetterB) return 1;
+
+            if (dateA < dateB) return -1;
+            if (dateA > dateB) return 1;
+
+            return 0;
+          });
       }
       return [];
     },
 
+    // filterAndSortBookedRooms(bookedScheduleArray, queryText, selectedStatus) {
+    //   console.log(queryText);
+
+    //   if (Array.isArray(bookedScheduleArray)) {
+    //     const query = queryText.toLowerCase();
+    //     const status =
+    //       selectedStatus?.label?.toLowerCase() ?? selectedStatus?.toLowerCase();
+
+    //     const filteredRooms = bookedScheduleArray.filter((row) => {
+    //       return (
+    //         status === "all status" ||
+    //         row.booked.some((bookedEntry) =>
+    //           status === "active" ? bookedEntry.active : !bookedEntry.active
+    //         )
+    //       );
+    //     });
+
+    //     return filteredRooms
+    //       .filter((row) => {
+    //         const roomNameMatches =
+    //           row.roomName &&
+    //           row.roomName.toString().toLowerCase().includes(query);
+
+    //         const roomTypeMatches =
+    //           row.roomDescription &&
+    //           row.roomDescription.toString().toLowerCase().includes(query);
+
+    //         const bookedMatches = row.booked.some(
+    //           (booking) =>
+    //             (booking.subjectCode &&
+    //               booking.subjectCode
+    //                 .toString()
+    //                 .toLowerCase()
+    //                 .includes(query)) ||
+    //             (booking.subjectDescription &&
+    //               booking.subjectDescription
+    //                 .toString()
+    //                 .toLowerCase()
+    //                 .includes(query))
+    //         );
+
+    //         // console.log(query);
+
+    //         // console.log(new Date(row.fromDate).toISOString().slice(0, 10));
+
+    //         // const fromDateMatches =
+    //         //   row.fromDate &&
+    //         //   new Date(row.fromDate).toISOString().slice(0, 10).includes(query);
+
+    //         // const toDateMatches =
+    //         //   row.toDate &&
+    //         //   new Date(row.toDate).toISOString().slice(0, 10).includes(query);
+
+    //         return (
+    //           roomNameMatches ||
+    //           roomTypeMatches ||
+    //           bookedMatches ||
+    //           fromDateMatches ||
+    //           toDateMatches
+    //         );
+    //       })
+    //       .sort((a, b) => {
+    //         const nameA = a.roomName || "";
+    //         const nameB = b.roomName || "";
+    //         const dateA = new Date(a.dateTimeCreated);
+    //         const dateB = new Date(b.dateTimeCreated);
+
+    //         const firstLetterA = nameA.charAt(0).toUpperCase();
+    //         const firstLetterB = nameB.charAt(0).toUpperCase();
+
+    //         if (firstLetterA < firstLetterB) return -1;
+    //         if (firstLetterA > firstLetterB) return 1;
+
+    //         if (dateA < dateB) return -1;
+    //         if (dateA > dateB) return 1;
+
+    //         return 0;
+    //       });
+    //   }
+    //   return [];
+    // },
+
     clearSearchText() {
       this.searchText = "";
       this.searchTextEmployee = "";
+    },
+
+    async successCancel() {
+      this.getBookedScheduleByEmployee();
+      this.getBookedSchedule();
     },
 
     async getBookedSchedule() {

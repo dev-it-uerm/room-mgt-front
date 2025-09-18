@@ -557,7 +557,7 @@ export default {
 
       if (this.step === 3) {
         this.selectedDates = [];
-        // this.selectedDepartment = null;
+        this.selectedDepartment = null;
         this.remarks = "";
         this.selectedSemester = null;
         this.selectedSubject = null;
