@@ -1,9 +1,8 @@
-importScripts("https://cdn.jsdelivr.net/npm/exceljs/dist/exceljs.min.js");
-// importScripts("/excel.js");
+// importScripts("https://cdn.jsdelivr.net/npm/exceljs/dist/exceljs.min.js");
+importScripts("/excel.js");
 
 self.onmessage = async (event) => {
   const { type, data } = event.data;
-
   try {
     const result = await generateExcelType(data);
     self.postMessage({ success: true, result });
