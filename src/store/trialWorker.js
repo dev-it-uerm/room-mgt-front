@@ -516,6 +516,7 @@ const generateExcel = async (type, data) => {
       Days,
       intervals,
       section,
+      deptLabel,
       departmentCode,
       buildingDescription,
       paramFromDate,
@@ -590,6 +591,7 @@ const generateExcel = async (type, data) => {
 
   // Apply merged cells and calculate utilization
   for (const [mergedKey, details] of mergedCells) {
+    console.log(details);
     const [RoomId, startRow, endRow, colIndex] = mergedKey
       .split("-")
       .map(Number);
@@ -1581,23 +1583,25 @@ const formattedDate = (date) => {
 };
 
 const getColorCollege = (college) => {
+  console.log(college);
   if (!college) return "FFFFFF";
 
   let color;
+
   switch (college.toUpperCase().trim()) {
-    case "COLLEGE OF ALLIED REHABILITATION SCIENCES":
+    case "4000":
       color = "F44336"; // Red
       break;
-    case "COLLEGE OF MEDICINE":
+    case "2000":
       color = "2196F3"; // Blue
       break;
-    case "COLLEGE OF ALLIED HEALTH PROFESSIONS":
+    case "10100":
       color = "FFFF00"; // Yellow
       break;
-    case "COLLEGE OF NURSING":
+    case "3000":
       color = "21BA45"; // Green
       break;
-    case "GRADUATE SCHOOL":
+    case "8000":
       color = "551A8B"; // Purple
       break;
     case "MIXUSED":
@@ -1607,6 +1611,29 @@ const getColorCollege = (college) => {
       color = "FFFFFF"; // White
       break;
   }
+  // switch (college.toUpperCase().trim()) {
+  //   case "COLLEGE OF ALLIED REHABILITATION SCIENCES":
+  //     color = "F44336"; // Red
+  //     break;
+  //   case "COLLEGE OF MEDICINE":
+  //     color = "2196F3"; // Blue
+  //     break;
+  //   case "COLLEGE OF ALLIED HEALTH PROFESSIONS":
+  //     color = "FFFF00"; // Yellow
+  //     break;
+  //   case "COLLEGE OF NURSING":
+  //     color = "21BA45"; // Green
+  //     break;
+  //   case "GRADUATE SCHOOL":
+  //     color = "551A8B"; // Purple
+  //     break;
+  //   case "MIXUSED":
+  //     color = "FF9800"; // Orange
+  //     break;
+  //   default:
+  //     color = "FFFFFF"; // White
+  //     break;
+  // }
 
   return color;
 };
