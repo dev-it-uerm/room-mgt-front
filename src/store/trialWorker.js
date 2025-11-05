@@ -1,5 +1,5 @@
-// importScripts("https://cdn.jsdelivr.net/npm/exceljs/dist/exceljs.min.js");
-importScripts("/excel.js");
+importScripts("https://cdn.jsdelivr.net/npm/exceljs/dist/exceljs.min.js");
+// importScripts("/excel.js");
 
 self.onmessage = async (event) => {
   const { type, data } = event.data;
@@ -591,7 +591,6 @@ const generateExcel = async (type, data) => {
 
   // Apply merged cells and calculate utilization
   for (const [mergedKey, details] of mergedCells) {
-    console.log(details);
     const [RoomId, startRow, endRow, colIndex] = mergedKey
       .split("-")
       .map(Number);
@@ -1583,7 +1582,6 @@ const formattedDate = (date) => {
 };
 
 const getColorCollege = (college) => {
-  console.log(college);
   if (!college) return "FFFFFF";
 
   let color;
