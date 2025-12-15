@@ -204,12 +204,15 @@
   </q-dialog>
 
   <q-dialog v-model="selectedSchedDia" persistent>
-    <q-card :class="[$q.screen.name + '-text']">
+    <q-card
+      :class="[$q.screen.name + '-text']"
+      style="width: fit-content; min-width: 300px; max-width: 90vw"
+    >
       <q-card-section class="bg-blue-10 row items-center">
         <div class="text-white text-bold">Selected Schedule</div>
         <q-space></q-space>
         <q-btn
-          class="bg-white text-biue-10"
+          class="bg-white text-blue-10"
           icon="close"
           push
           round
@@ -219,23 +222,52 @@
           v-close-popup
         ></q-btn>
       </q-card-section>
+
       <q-card-section>
         <p class="q-pa-sm">
-          {{ selectedRow.remarks }} {{ selectedRow.deptLabel }}:
-          <strong
-            >{{ selectedRow.subjectCode }} -
-            {{ selectedRow.subjectDescription }}</strong
+          <span
+            v-if="selectedRow.subjectCode || selectedRow.subjectDescription"
           >
-          <br />
-          Section: {{ selectedRow.section }}.
-          <br />
-          Time:
-          {{ selectedRow.formattedIntervals }}
-          <br />
-          Every {{ formatDays(selectedRow.days) }} of date
-          {{ selectedRow.formatFrom }} to {{ selectedRow.formatTo }}
+            Subject Description (Code - Description):
+            <strong>
+              {{ selectedRow.subjectCode }} -
+              {{ selectedRow.subjectDescription }}
+            </strong>
+            <br />
+          </span>
+
+          <span v-if="selectedRow.section">
+            Section: {{ selectedRow.section }}<br />
+          </span>
+
+          <span v-if="selectedRow.formattedIntervals">
+            Time: {{ selectedRow.formattedIntervals }}<br />
+          </span>
+
+          <span
+            v-if="
+              selectedRow.days && selectedRow.formatFrom && selectedRow.formatTo
+            "
+          >
+            Day(s) / Date :
+            {{ selectedRow.formatFrom !== selectedRow.formatTo ? "Every" : "" }}
+            {{ formatDays(selectedRow.days) }}
+            {{ selectedRow.formatFrom !== selectedRow.formatTo ? "of" : "" }}
+            {{
+              selectedRow.formatFrom !== selectedRow.formatTo
+                ? selectedRow.formatFrom + "to" + selectedRow.formatTo
+                : selectedRow.formatFrom
+            }}
+
+            <br />
+          </span>
+
+          <span v-if="selectedRow.remarks && !isNA(selectedRow.remarks)">
+            Remarks: {{ selectedRow.remarks }}
+          </span>
         </p>
       </q-card-section>
+
       <q-card-section class="text-right">
         <q-btn
           class="bg-negative text-white"
@@ -406,6 +438,11 @@ export default {
   },
 
   methods: {
+    isNA(value) {
+      if (!value) return true;
+      return ["n/a", "na"].includes(value.trim().toLowerCase());
+    },
+
     bookMethodDialog(sched) {
       this.schedDialog = true;
       this.selectedSchedule = sched;

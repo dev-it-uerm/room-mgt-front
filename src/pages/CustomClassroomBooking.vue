@@ -735,7 +735,6 @@ export default {
             });
 
             helperMethods.disablePointerEvents();
-
             await this.$store.dispatch(
               "roomModule/createCustomScheduleBooking",
               allData

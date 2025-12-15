@@ -151,6 +151,7 @@ export default {
         for (const schedule of scheduleEntry.booked) {
           const {
             subjectCode,
+            subjectDescription,
             deptLabel,
             section,
             days,
@@ -206,6 +207,9 @@ export default {
             roomName,
             roomDescription,
             floor,
+            subjectCode,
+            subjectDescription,
+            section,
             department: deptLabel,
             intervals,
             title: formattedTitle,

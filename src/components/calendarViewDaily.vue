@@ -515,20 +515,18 @@ export default {
         }
 
         const isEventMatchingQuery =
-          (event.title &&
-            event.title.toString().toLowerCase().includes(query)) ||
-          (event.roomDescription &&
-            event.roomDescription.toString().toLowerCase().includes(query)) ||
-          (event.professor &&
-            event.professor.toString().toLowerCase().includes(query)) ||
-          (event.department &&
-            event.department.toString().toLowerCase().includes(query)) ||
-          (event.dateRange &&
-            event.dateRange.toString().toLowerCase().includes(query)) ||
-          (event.roomName &&
-            event.roomName.toString().toLowerCase().includes(query)) ||
-          (event.buildingDescription &&
-            event.buildingDescription.toString().toLowerCase().includes(query));
+          event.title?.toString().toLowerCase().includes(query) ||
+          event.roomDescription?.toString().toLowerCase().includes(query) ||
+          event.professor?.toString().toLowerCase().includes(query) ||
+          event.department?.toString().toLowerCase().includes(query) ||
+          event.dateRange?.toString().toLowerCase().includes(query) ||
+          event.roomName?.toString().toLowerCase().includes(query) ||
+          event.buildingDescription?.toString().toLowerCase().includes(query) ||
+          event.subjectCode?.toString().toLowerCase().includes(query) ||
+          event.subjectDescription?.toString().toLowerCase().includes(query) ||
+          event.section?.toString().toLowerCase().includes(query) ||
+          event.formatFrom?.toLowerCase().includes(query) ||
+          event.formatTo?.toLowerCase().includes(query);
 
         if (isEventMatchingQuery) {
           while (start.date <= end.date) {
