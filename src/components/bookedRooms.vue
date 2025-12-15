@@ -224,7 +224,7 @@
       </q-card-section>
 
       <q-card-section>
-        <p class="q-pa-sm">
+        <p class="q-pa-xs">
           <span
             v-if="selectedRow.subjectCode || selectedRow.subjectDescription"
           >
