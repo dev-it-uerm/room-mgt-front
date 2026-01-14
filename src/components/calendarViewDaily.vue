@@ -259,55 +259,6 @@
             </q-tr>
           </template>
         </q-table>
-        <!-- <q-virtual-scroll
-          class="virtual-scroll"
-          type="table"
-          style="max-height: 700px"
-          :virtual-scroll-item-size="48"
-          :virtual-scroll-sticky-size-start="48"
-          :virtual-scroll-sticky-size-end="32"
-          :items="computedSelectedSchedule"
-        >
-          <template v-slot:before>
-            <thead class="sticky-thead">
-              <tr>
-                <th
-                  v-for="col in selectedCol"
-                  :key="col.name"
-                  class="text-bold"
-                >
-                  {{ col.label }}
-                </th>
-              </tr>
-            </thead>
-          </template>
-          <template v-slot="{ item: row, name }">
-            <q-tr :key="name">
-              <q-td
-                v-for="col in selectedCol"
-                :key="col.name"
-                class="text-center"
-                :style="{
-                  width: col.width || 'auto',
-                  'white-space':
-                    col.name === 'subjectDescription' ||
-                    col.name === 'details' ||
-                    col.name === 'department'
-                      ? 'normal'
-                      : 'nowrap',
-                  'word-wrap':
-                    col.name === 'subjectDescription' ||
-                    col.name === 'details' ||
-                    col.name === 'department'
-                      ? 'break-word'
-                      : 'normal',
-                }"
-              >
-                <renderCellDia :row="row" :col="col" />
-              </q-td>
-            </q-tr>
-          </template>
-        </q-virtual-scroll> -->
       </q-card-section>
     </q-card>
   </q-dialog>
@@ -471,6 +422,91 @@ export default {
   },
 
   computed: {
+    //Original Map without specific days to put in view calendar
+    // eventsMap() {
+    //   const map = {};
+    //   const query = this.searchText ? this.searchText.toLowerCase() : "";
+    //   const selectedDeptCode = this.selectedDepartment
+    //     ? this.selectedDepartment.deptLabel
+    //     : null;
+    //   const status =
+    //     this.selectedStatus?.label?.toLowerCase() ??
+    //     this.selectedStatus?.toLowerCase();
+    //   const selectedBuilding = this.selectedBuilding
+    //     ? this.selectedBuilding.description
+    //     : null;
+
+    //   const selectedRoom = this.selectedRoom ? this.selectedRoom.name : null;
+
+    //   console.log(this.events);
+
+    //   for (const event of this.events) {
+    //     let start = parseTimestamp(event.fromDate);
+    //     const end = parseTimestamp(event.toDate);
+
+    //     if (selectedDeptCode && event.department !== selectedDeptCode) {
+    //       continue;
+    //     }
+
+    //     if (
+    //       selectedBuilding &&
+    //       event.buildingDescription !== selectedBuilding
+    //     ) {
+    //       continue;
+    //     }
+
+    //     if (selectedRoom && event.roomName !== selectedRoom) {
+    //       continue;
+    //     }
+
+    //     if (
+    //       !(
+    //         status === "all status" ||
+    //         (status === "active" ? event.active : !event.active)
+    //       )
+    //     ) {
+    //       continue;
+    //     }
+
+    //     const isEventMatchingQuery =
+    //       event.title?.toString().toLowerCase().includes(query) ||
+    //       event.roomDescription?.toString().toLowerCase().includes(query) ||
+    //       event.professor?.toString().toLowerCase().includes(query) ||
+    //       event.department?.toString().toLowerCase().includes(query) ||
+    //       event.dateRange?.toString().toLowerCase().includes(query) ||
+    //       event.roomName?.toString().toLowerCase().includes(query) ||
+    //       event.buildingDescription?.toString().toLowerCase().includes(query) ||
+    //       event.subjectCode?.toString().toLowerCase().includes(query) ||
+    //       event.subjectDescription?.toString().toLowerCase().includes(query) ||
+    //       event.section?.toString().toLowerCase().includes(query) ||
+    //       event.formatFrom?.toLowerCase().includes(query) ||
+    //       event.formatTo?.toLowerCase().includes(query);
+
+    //     if (isEventMatchingQuery) {
+    //       while (start.date <= end.date) {
+    //         if (!map[start.date]) {
+    //           map[start.date] = {};
+    //         }
+
+    //         const abbrDeptLabel = event.department
+    //           ? event.department
+    //           : "OTHER SCHEDULES";
+
+    //         if (!map[start.date][abbrDeptLabel]) {
+    //           map[start.date][abbrDeptLabel] = [];
+    //         }
+
+    //         map[start.date][abbrDeptLabel].push(event);
+    //         start = addToDate(start, { day: 1 });
+    //       }
+    //     }
+    //   }
+
+    //   return map;
+    // },
+    //Original Map without specific days to put in view calendar
+
+    //Map that will show to the calendar the info by specific days
     eventsMap() {
       const map = {};
       const query = this.searchText ? this.searchText.toLowerCase() : "";
@@ -485,6 +521,42 @@ export default {
         : null;
 
       const selectedRoom = this.selectedRoom ? this.selectedRoom.name : null;
+
+      // Helper function to extract days from details string
+      const extractDays = (details) => {
+        if (!details) return null;
+
+        const daysMatch = details.match(/Days?:\s*([^,]+)/i);
+        if (!daysMatch) return null;
+
+        const daysString = daysMatch[1].trim();
+        const dayMap = {
+          monday: 1,
+          tuesday: 2,
+          wednesday: 3,
+          thursday: 4,
+          friday: 5,
+          saturday: 6,
+          sunday: 0,
+        };
+
+        // Handle multiple days separated by commas or "and"
+        const dayNames = daysString
+          .toLowerCase()
+          .split(/[,&]|and/)
+          .map((d) => d.trim());
+        const allowedDays = [];
+
+        for (const dayName of dayNames) {
+          if (dayMap[dayName] !== undefined) {
+            allowedDays.push(dayMap[dayName]);
+          }
+        }
+
+        return allowedDays.length > 0 ? allowedDays : null;
+      };
+
+      console.log(this.events);
 
       for (const event of this.events) {
         let start = parseTimestamp(event.fromDate);
@@ -529,20 +601,30 @@ export default {
           event.formatTo?.toLowerCase().includes(query);
 
         if (isEventMatchingQuery) {
+          // Extract allowed days from the details field
+          const allowedDays = extractDays(event.details);
+
           while (start.date <= end.date) {
-            if (!map[start.date]) {
-              map[start.date] = {};
+            // If allowedDays is specified, only add event on those days
+            const currentDate = new Date(start.date);
+            const dayOfWeek = currentDate.getDay();
+
+            if (!allowedDays || allowedDays.includes(dayOfWeek)) {
+              if (!map[start.date]) {
+                map[start.date] = {};
+              }
+
+              const abbrDeptLabel = event.department
+                ? event.department
+                : "OTHER SCHEDULES";
+
+              if (!map[start.date][abbrDeptLabel]) {
+                map[start.date][abbrDeptLabel] = [];
+              }
+
+              map[start.date][abbrDeptLabel].push(event);
             }
 
-            const abbrDeptLabel = event.department
-              ? event.department
-              : "OTHER SCHEDULES";
-
-            if (!map[start.date][abbrDeptLabel]) {
-              map[start.date][abbrDeptLabel] = [];
-            }
-
-            map[start.date][abbrDeptLabel].push(event);
             start = addToDate(start, { day: 1 });
           }
         }
@@ -550,6 +632,7 @@ export default {
 
       return map;
     },
+    //Map that will show to the calendar the info by specific days
 
     computedSelectedSchedule() {
       if (
